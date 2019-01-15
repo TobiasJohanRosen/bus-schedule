@@ -1,2 +1,3 @@
 # Ignore macOS scraps
 .DS_Store
+exp/
