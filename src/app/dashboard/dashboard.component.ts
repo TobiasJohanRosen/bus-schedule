@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { TransitLineService } from "../transit-line.service";
+import { Component, OnInit } from '@angular/core';
+import { TransitLineService } from '../transit-line.service';
 
 @Component({
-  selector: "iw-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"]
+  selector: 'iw-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   public transitLines = [6, 11, 770, 804];
@@ -17,19 +17,31 @@ export class DashboardComponent implements OnInit {
 
   constructor(private api: TransitLineService) {}
 
-  ngOnInit() {
+  private getDeparturesFor(lineNumber: number) {
     this.api
-      .getTimeSchedule(804)
+      .getTimeSchedule(lineNumber)
       .then(result => {
         result.forEach(transitDeparture => {
-          this.transitDepartures[
-            transitDeparture["routeLinks"][0]["line"]["lineNo"]
-          ].push(transitDeparture);
-          console.log(this.transitDepartures);
+          if (
+            transitDeparture['routeLinks'][0]['line']['lineNo'] === lineNumber
+          ) {
+            this.transitDepartures[lineNumber].push(transitDeparture);
+          }
         });
       })
       .catch(error => {
         console.log(error);
       });
+  }
+
+  private fetchAllTransitLineDepartures(): void {
+    this.getDeparturesFor(6);
+    this.getDeparturesFor(11);
+    this.getDeparturesFor(770);
+    this.getDeparturesFor(804);
+  }
+
+  ngOnInit() {
+    this.fetchAllTransitLineDepartures();
   }
 }
