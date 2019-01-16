@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -38,34 +38,36 @@ $mat-wasp: (
     A700: #ffffff
   )
 );
-
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $iw-app-primary: mat-palette($mat-wasp);
 $iw-app-accent: mat-palette($mat-wasp, A200, A100, A400);
-
 // The warn palette is optional (defaults to red).
 $iw-app-warn: mat-palette($mat-red);
-
 // Create the theme object (a Sass map containing all of the palettes).
 $iw-app-theme: mat-light-theme($iw-app-primary, $iw-app-accent, $iw-app-warn);
-
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($iw-app-theme);
-
 body {
-  background-color: map-get($mat-wasp, A100);
+  background-color: map-get($mat-wasp, 900);
+  color: #ffffff;
 }
-
 *:focus {
   outline: none !important;
 }
-
+.upper {
+  background-color: map-get($mat-wasp, 500);
+  color: #eeeeee;
+}
+.lower {
+  background-color: map-get($mat-wasp, A100);
+  color: #eeeeee;
+}
 .bg-yellow  {
-  background-color: #dbbd2c;
+  background-color: #dfc544;
 }
 .bg-green {
   background-color: #30921c;

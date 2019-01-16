@@ -1,0 +1,17 @@
+.upper {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  z-index: 100;
+  font-size: 150%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+}
+
+.lower {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+h2,
+.h2 {
+  font-weight: normal;
+}

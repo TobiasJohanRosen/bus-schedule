@@ -1,0 +1,33 @@
+<mat-card class="upper" *ngIf="departures.length">
+  <div class="d-flex h2">
+    <span
+      >{{ departures[0].routeLinks[0].line.name }}
+      {{ departures[0].routeLinks[0].line.towards }}</span
+    >
+    <span class="ml-auto">{{ departures[0].departureDateTime }}</span>
+  </div>
+  <div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="451"
+      height="32"
+      viewBox="0 0 451 32"
+      [style.fill]="'#ffffff'"
+    >
+      <g transform="translate(-123 -597)">
+        <rect fill="" width="435" height="12" transform="translate(123 607)" />
+        <circle fill="" cx="16" cy="16" r="16" transform="translate(542 597)" />
+        <circle fill="" cx="16" cy="16" r="16" transform="translate(208 597)" />
+      </g>
+    </svg>
+  </div>
+</mat-card>
+<mat-card class="lower" *ngIf="departures.length">
+  <div class="d-flex">
+    <span
+      >Nästa: {{ departures[1].routeLinks[0].line.name }}
+      {{ departures[1].routeLinks[0].line.towards }}
+    </span>
+    <span class="ml-auto">{{ departures[1].departureDateTime }}</span>
+  </div>
+</mat-card>
