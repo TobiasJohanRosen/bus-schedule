@@ -3,6 +3,9 @@
     class="d-inline-block my-3 col-md-6"
     *ngFor="let transitLine of transitLines"
   >
-    <iw-bus [departures]="transitDepartures[transitLine]"></iw-bus>
+    <iw-bus
+      [departures]="transitDepartures[transitLine]"
+      *ngIf="hasFetchedTransitLine.includes(transitLine)"
+    ></iw-bus>
   </div>
 </div>

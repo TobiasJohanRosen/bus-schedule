@@ -1,10 +1,15 @@
-<mat-card class="upper" *ngIf="departures.length">
-  <div class="d-flex h2">
+<mat-card class="upper" *ngIf="nextDeparture">
+  <div class="d-flex h2 font-weight-normal">
     <span
-      >{{ departures[0].routeLinks[0].line.name }}
-      {{ departures[0].routeLinks[0].line.towards }}</span
+      >{{ nextDeparture.routeLinks[0].line.name }}
+      {{
+        nextDeparture.routeLinks[0].line.towards.split(" via ").length > 1
+          ? nextDeparture.routeLinks[0].line.towards.split(" via ")[0]
+          : nextDeparture.routeLinks[0].line.towards
+      }}</span
     >
-    <span class="ml-auto">{{ departsIn }} min</span>
+    <span class="ml-auto" *ngIf="departureIn > 0">{{ departureIn }} min</span>
+    <span class="ml-auto" *ngIf="departureIn <= 0">avgår nu</span>
   </div>
   <div>
     <svg
@@ -22,12 +27,19 @@
     </svg>
   </div>
 </mat-card>
-<mat-card class="lower" *ngIf="departures.length">
+<mat-card class="lower" *ngIf="laterDeparture">
   <div class="d-flex">
     <span
-      >Nästa: {{ departures[1].routeLinks[0].line.name }}
-      {{ departures[1].routeLinks[0].line.towards }}
+      >Nästa: {{ laterDeparture.routeLinks[0].line.name }}
+      {{ laterDeparture.routeLinks[0].line.towards }}
     </span>
-    <span class="ml-auto">{{ departures[1].departureDateTime }}</span>
+    <span class="ml-auto">{{
+      laterDeparture.departureDateTime.split("T")[1]
+    }}</span>
+  </div>
+</mat-card>
+<mat-card class="lower" *ngIf="!laterDeparture">
+  <div class="d-flex">
+    <span><i>Kan inte visa nästa avgång</i></span>
   </div>
 </mat-card>
