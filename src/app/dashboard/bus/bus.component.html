@@ -17,7 +17,11 @@
       width="451"
       height="32"
       viewBox="0 0 451 32"
-      [style.fill]="'#ffffff'"
+      [style.fill]="
+        nextDeparture.routeLinks[0].line.trafficType == 1
+          ? '#30921C'
+          : '#DBBD2C'
+      "
     >
       <g transform="translate(-123 -597)">
         <rect fill="" width="435" height="12" transform="translate(123 607)" />
