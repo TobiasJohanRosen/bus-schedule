@@ -1,4 +1,4 @@
-@import "~@angular/material/theming";
+@import '~@angular/material/theming';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -61,10 +61,21 @@ body {
 .upper {
   background-color: map-get($mat-wasp, 500);
   color: #eeeeee;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
 }
 .lower {
   background-color: map-get($mat-wasp, A100);
   color: #eeeeee;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+.deviation {
+  background-color: #e23535;
+  color: #eeeeee;
+  border-radius: 0px !important;
 }
 .bg-yellow  {
   background-color: #dfc544;

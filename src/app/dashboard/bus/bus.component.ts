@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { TransitDeparture } from "src/app/transit-departure";
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { TransitDeparture } from 'src/app/transit-departure';
+import { MatRipple } from '@angular/material';
 
 @Component({
-  selector: "iw-bus",
-  templateUrl: "./bus.component.html",
-  styleUrls: ["./bus.component.scss"]
+  selector: 'iw-bus',
+  templateUrl: './bus.component.html',
+  styleUrls: ['./bus.component.scss']
 })
 export class BusComponent implements OnInit {
   _departures: Array<TransitDeparture> = [];
@@ -26,10 +27,33 @@ export class BusComponent implements OnInit {
     return this._departures;
   }
 
-  nextDeparture: TransitDeparture;
-  laterDeparture: TransitDeparture;
+  public nextDeparture: TransitDeparture;
+  public laterDeparture: TransitDeparture;
 
-  constructor() {}
+  @ViewChild(MatRipple) ripple: MatRipple;
+
+  /** Shows a centered and persistent ripple. */
+  launchRipple() {
+    const rippleRef = this.ripple.launch({
+      persistent: true,
+      centered: true,
+      animation: {
+        enterDuration: 1000,
+        exitDuration: 5000
+      }
+    });
+
+    // Fade out the ripple later.
+    rippleRef.fadeOut();
+  }
+
+  constructor() {
+    setInterval(() => {
+      if (this.ripple) {
+        this.launchRipple();
+      }
+    }, 10000);
+  }
 
   ngOnInit() {}
 }

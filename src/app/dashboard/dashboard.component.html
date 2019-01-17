@@ -1,6 +1,15 @@
-<div class="d-block container">
+<div
+  class="d-flex flex-column my-3 align-items-center"
+  style="min-height: 100vh;"
+>
+  <div class="container-fluid">
+    <h2 class="float-right text-left text-uppercase">
+      {{ clock | date: 'EEEE, HH:mm:ss' }}
+    </h2>
+  </div>
   <div
-    class="d-inline-block my-3 col-md-6"
+    class="d-inline-block my-3 px-4 w-100"
+    [class.py-5]="!landscape"
     *ngFor="let transitLine of transitLines"
   >
     <iw-bus
