@@ -72,8 +72,13 @@ body {
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
 }
-.deviation {
+.deviation-danger {
   background-color: #e23535;
+  color: #eeeeee;
+  border-radius: 0px !important;
+}
+.deviation-warn {
+  background-color: #dfc544;
   color: #eeeeee;
   border-radius: 0px !important;
 }

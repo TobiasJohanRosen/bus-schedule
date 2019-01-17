@@ -1,6 +1,6 @@
 <div
-  class="d-flex flex-column my-3 align-items-center"
-  style="min-height: 100vh;"
+  class="d-flex flex-column py-3 align-items-stretch"
+  style="min-height: 100vh; background-image: url('./assets/background.png'); background-repeat: no-repeat; background-size: cover; background-position: center;"
 >
   <div class="container-fluid">
     <h2 class="float-right text-left text-uppercase">
@@ -9,7 +9,6 @@
   </div>
   <div
     class="d-inline-block my-3 px-4 w-100"
-    [class.py-5]="!landscape"
     *ngFor="let transitLine of transitLines"
   >
     <iw-bus

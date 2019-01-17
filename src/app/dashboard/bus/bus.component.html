@@ -22,19 +22,22 @@
     </svg>
   </div>
 </mat-card>
-<mat-card
-  class="deviation"
-  matRipple
-  #ripple
-  [matRippleRadius]="1000"
-  [matRippleColor]="'rgba(32, 32, 32, 0.1)'"
-  *ngFor="let deviation of nextDeparture.deviations"
->
-  <div class="d-flex flex-column">
-    <h5>{{ deviation.title }}</h5>
-    <span>{{ deviation.text }}</span>
-  </div>
-</mat-card>
+<div *ngFor="let deviation of nextDeparture.deviations">
+  <mat-card
+    class="deviation-danger"
+    *ngIf="deviation.severity > 5"
+    matRipple
+    #ripple
+    [matRippleRadius]="1000"
+    [matRippleColor]="'rgba(32, 32, 32, 0.1)'"
+  >
+    <div class="d-flex flex-column">
+      <h5>{{ deviation.title }}</h5>
+      <span>{{ deviation.text }}</span>
+    </div>
+  </mat-card>
+</div>
+
 <mat-card class="lower" *ngIf="laterDeparture">
   <div class="d-flex">
     <span>{{ laterDeparture.line }} {{ laterDeparture.name }} </span>
