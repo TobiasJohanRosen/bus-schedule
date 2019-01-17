@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { TransitDeparture } from "src/app/transit-departure";
 
 @Component({
   selector: "iw-bus",
@@ -6,25 +7,18 @@ import { Component, OnInit, Input } from "@angular/core";
   styleUrls: ["./bus.component.scss"]
 })
 export class BusComponent implements OnInit {
-  _departures: Array<object> = [];
-  @Input() set departures(departures: Array<object>) {
+  _departures: Array<TransitDeparture> = [];
+  @Input() set departures(departures: Array<TransitDeparture>) {
     this._departures = departures;
 
-    this.nextDeparture = this._departures[0];
+    if (this._departures.length > 0) {
+      this.nextDeparture = this._departures[0];
+    }
+
     if (this._departures.length > 1) {
       this.laterDeparture = this._departures[1];
     }
 
-    if (this._departures.length > 0) {
-      if (this._departures[0]["departureDateTime"]) {
-        var a = new Date(this._departures[0]["departureDateTime"]);
-        var b = new Date();
-        this.departureIn = Math.round(
-          (a.getTime() - b.getTime()) / (60 * 1000)
-        );
-        console.log(a, b, this.departureIn);
-      }
-    }
     console.log(this._departures);
   }
 
@@ -32,10 +26,8 @@ export class BusComponent implements OnInit {
     return this._departures;
   }
 
-  nextDeparture: object;
-  departureIn: number = 0;
-  laterDeparture: object;
-  tick;
+  nextDeparture: TransitDeparture;
+  laterDeparture: TransitDeparture;
 
   constructor() {}
 

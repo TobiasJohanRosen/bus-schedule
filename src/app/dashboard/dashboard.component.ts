@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { TransitLineService } from "../transit-line.service";
+import { TransitDeparture } from "../transit-departure";
 
 @Component({
   selector: "iw-dashboard",
@@ -8,11 +9,16 @@ import { TransitLineService } from "../transit-line.service";
 })
 export class DashboardComponent implements OnInit {
   public transitLines = [6, 11, 770, 804];
-  public transitDepartures = {
-    804: [],
-    11: [],
+  public transitDepartures: {
+    6: Array<TransitDeparture>;
+    11: Array<TransitDeparture>;
+    770: Array<TransitDeparture>;
+    804: Array<TransitDeparture>;
+  } = {
     6: [],
-    770: []
+    11: [],
+    770: [],
+    804: []
   };
 
   public hasFetchedTransitLine: Array<number> = [];
@@ -27,7 +33,9 @@ export class DashboardComponent implements OnInit {
           if (
             transitDeparture["routeLinks"][0]["line"]["lineNo"] === lineNumber
           ) {
-            this.transitDepartures[lineNumber].push(transitDeparture);
+            this.transitDepartures[lineNumber].push(
+              new TransitDeparture(transitDeparture)
+            );
           }
         });
         if (!this.hasFetchedTransitLine.includes(lineNumber)) {

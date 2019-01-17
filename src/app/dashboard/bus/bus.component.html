@@ -1,15 +1,10 @@
 <mat-card class="upper" *ngIf="nextDeparture">
   <div class="d-flex h2 font-weight-normal">
-    <span
-      >{{ nextDeparture.routeLinks[0].line.name }}
-      {{
-        nextDeparture.routeLinks[0].line.towards.split(" via ").length > 1
-          ? nextDeparture.routeLinks[0].line.towards.split(" via ")[0]
-          : nextDeparture.routeLinks[0].line.towards
-      }}</span
+    <span> {{ nextDeparture.line }} {{ nextDeparture.name }} </span>
+    <span class="ml-auto" *ngIf="nextDeparture.departing > 0"
+      >{{ nextDeparture.departing }} min</span
     >
-    <span class="ml-auto" *ngIf="departureIn > 0">{{ departureIn }} min</span>
-    <span class="ml-auto" *ngIf="departureIn <= 0">avgår nu</span>
+    <span class="ml-auto" *ngIf="nextDeparture.departing <= 0">avgår nu</span>
   </div>
   <div>
     <svg
@@ -17,11 +12,7 @@
       width="451"
       height="32"
       viewBox="0 0 451 32"
-      [style.fill]="
-        nextDeparture.routeLinks[0].line.trafficType == 1
-          ? '#30921C'
-          : '#DBBD2C'
-      "
+      [style.fill]="nextDeparture.color"
     >
       <g transform="translate(-123 -597)">
         <rect fill="" width="435" height="12" transform="translate(123 607)" />
@@ -33,13 +24,8 @@
 </mat-card>
 <mat-card class="lower" *ngIf="laterDeparture">
   <div class="d-flex">
-    <span
-      >Nästa: {{ laterDeparture.routeLinks[0].line.name }}
-      {{ laterDeparture.routeLinks[0].line.towards }}
-    </span>
-    <span class="ml-auto">{{
-      laterDeparture.departureDateTime.split("T")[1]
-    }}</span>
+    <span>Nästa: {{ laterDeparture.line }} {{ laterDeparture.name }} </span>
+    <span class="ml-auto">{{ laterDeparture.departingTime }}</span>
   </div>
 </mat-card>
 <mat-card class="lower" *ngIf="!laterDeparture">
