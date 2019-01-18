@@ -2,10 +2,13 @@
   <div class="d-flex h2 font-weight-normal">
     <span> {{ nextDeparture.line }} {{ nextDeparture.name }} </span>
     <span class="ml-auto" *ngIf="nextDeparture.departing > 0">
-      <div *ngIf="nextDeparture.departing <= 15">
+      <div *ngIf="nextDeparture.departing <= 60">
         {{ nextDeparture.departing }} min
+        <span style="font-size: 75%; opacity: .75;"
+          >({{ nextDeparture.departingTime }})</span
+        >
       </div>
-      <div *ngIf="nextDeparture.departing > 15">
+      <div *ngIf="nextDeparture.departing > 60">
         {{ nextDeparture.departingTime }}
       </div>
     </span>
