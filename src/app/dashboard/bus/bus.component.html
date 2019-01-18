@@ -1,9 +1,14 @@
 <mat-card class="upper" *ngIf="nextDeparture">
   <div class="d-flex h2 font-weight-normal">
     <span> {{ nextDeparture.line }} {{ nextDeparture.name }} </span>
-    <span class="ml-auto" *ngIf="nextDeparture.departing > 0"
-      >{{ nextDeparture.departing }} min</span
-    >
+    <span class="ml-auto" *ngIf="nextDeparture.departing > 0">
+      <div *ngIf="nextDeparture.departing <= 15">
+        {{ nextDeparture.departing }} min
+      </div>
+      <div *ngIf="nextDeparture.departing > 15">
+        {{ nextDeparture.departingTime }}
+      </div>
+    </span>
     <span class="ml-auto" *ngIf="nextDeparture.departing <= 0">avgår nu</span>
   </div>
   <div>
