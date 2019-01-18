@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { TransitLineService } from '../transit-line.service';
-import { TransitDeparture } from '../transit-departure';
+import { Component, OnInit } from "@angular/core";
+import { TransitLineService } from "../transit-line.service";
+import { TransitDeparture } from "../transit-departure";
 
 @Component({
-  selector: 'iw-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: "iw-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"]
 })
 export class DashboardComponent implements OnInit {
+  public thisIsProgress: number;
   public transitLines = [6, 11, 770, 804];
   public _transitDepartures: {
     6: Array<TransitDeparture>;
@@ -58,7 +59,7 @@ export class DashboardComponent implements OnInit {
         this._transitDepartures[lineNumber] = [];
         result.forEach(transitDeparture => {
           if (
-            transitDeparture['routeLinks'][0]['line']['lineNo'] === lineNumber
+            transitDeparture["routeLinks"][0]["line"]["lineNo"] === lineNumber
           ) {
             this._transitDepartures[lineNumber].push(
               new TransitDeparture(transitDeparture)
