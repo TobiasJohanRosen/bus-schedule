@@ -49,14 +49,3 @@
     <span class="ml-auto">{{ laterDeparture.departingTime }}</span>
   </div>
 </mat-card>
-<mat-card class="lower" *ngIf="departures.length > 2">
-  <div class="d-flex">
-    <span>Senare: {{ departures[2].line }} {{ departures[2].name }} </span>
-    <span class="ml-auto">{{ departures[2].departingTime }}</span>
-  </div>
-</mat-card>
-<mat-card class="lower" *ngIf="!laterDeparture">
-  <div class="d-flex">
-    <span><i>Kan inte visa nästa avgång</i></span>
-  </div>
-</mat-card>
