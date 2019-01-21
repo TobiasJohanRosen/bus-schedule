@@ -8,7 +8,9 @@ import { environment } from '../environments/environment';
 export class TransitLineService {
   constructor(private http: HttpClient) {}
 
-  public getTimeSchedule(transitLineNumber: number) {
+  public toTransitDepartures() {}
+
+  public fetchRealtime(transitLineNumber: number) {
     return this.http
       .post<Array<object>>(environment.endpoints.realtime, {
         url: environment.transitLines[transitLineNumber]
@@ -16,7 +18,7 @@ export class TransitLineService {
       .toPromise();
   }
 
-  public getOfflineTimeSchedule(transitLineNumber: number) {
+  public fetchFailover(transitLineNumber: number) {
     return this.http
       .post<Array<object>>(environment.endpoints.failover, {
         line: transitLineNumber

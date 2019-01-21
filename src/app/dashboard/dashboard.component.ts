@@ -10,17 +10,6 @@ import { TransitDeparture } from '../transit-departure';
 export class DashboardComponent implements OnInit {
   public transitLines = [6, 11, 770, 804];
   public deferredTransitLines = [1, 10, 809];
-  public _transitDepartures: {
-    6: Array<TransitDeparture>;
-    11: Array<TransitDeparture>;
-    770: Array<TransitDeparture>;
-    804: Array<TransitDeparture>;
-  } = {
-    6: [],
-    11: [],
-    770: [],
-    804: []
-  };
   public transitDepartures: {
     6: Array<TransitDeparture>;
     11: Array<TransitDeparture>;
@@ -37,8 +26,6 @@ export class DashboardComponent implements OnInit {
 
   public clock: Date = new Date();
 
-  public landscape: boolean = false;
-
   public hasFetchedTransitLine: Array<number> = [];
 
   public deferred: Array<TransitDeparture> = [];
@@ -54,22 +41,18 @@ export class DashboardComponent implements OnInit {
     }, 5000);
   }
 
-  private getOfflineDeparturesFor(lineNumber: number) {
+  private fetchFailoverDepartures(lineNumber: number) {
     return new Promise((resolve, reject) => {
       this.api
-        .getOfflineTimeSchedule(lineNumber)
+        .fetchFailover(lineNumber)
         .then(result => {
-          this._transitDepartures[lineNumber] = [];
+          let departures = [];
           result.forEach(transitDeparture => {
             if (parseInt(transitDeparture['transportNumber']) === lineNumber) {
-              this._transitDepartures[lineNumber].push(
-                new TransitDeparture(null, transitDeparture)
-              );
+              departures.push(new TransitDeparture(null, transitDeparture));
             }
           });
-          this.transitDepartures[lineNumber] = this._transitDepartures[
-            lineNumber
-          ];
+          this.transitDepartures[lineNumber] = departures;
           if (!this.hasFetchedTransitLine.includes(lineNumber)) {
             this.hasFetchedTransitLine.push(lineNumber);
           }
@@ -81,24 +64,20 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  private getDeparturesFor(lineNumber: number) {
+  private fetchDepartures(lineNumber: number) {
     return new Promise((resolve, reject) => {
       this.api
-        .getTimeSchedule(lineNumber)
+        .fetchRealtime(lineNumber)
         .then(result => {
-          this._transitDepartures[lineNumber] = [];
+          let departures = [];
           result.forEach(transitDeparture => {
             if (
               transitDeparture['routeLinks'][0]['line']['lineNo'] === lineNumber
             ) {
-              this._transitDepartures[lineNumber].push(
-                new TransitDeparture(transitDeparture)
-              );
+              departures.push(new TransitDeparture(transitDeparture));
             }
           });
-          this.transitDepartures[lineNumber] = this._transitDepartures[
-            lineNumber
-          ];
+          this.transitDepartures[lineNumber] = departures;
           if (!this.hasFetchedTransitLine.includes(lineNumber)) {
             this.hasFetchedTransitLine.push(lineNumber);
           }
@@ -112,25 +91,27 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  private getDepartures(remaining: Array<number>, online: boolean = true) {
+  private updateDepartures(remaining: Array<number>, online: boolean = true) {
     if (remaining.length) {
       let line = remaining[0];
       Promise.resolve().then(() => {
         if (online) {
-          this.getDeparturesFor(line)
+          // Fetch realtime data
+          this.fetchDepartures(line)
             .then(() => {
               remaining.splice(0, 1);
-              this.getDepartures(remaining);
+              this.updateDepartures(remaining);
             })
             .catch(error => {
-              this.getDepartures(remaining, false);
+              this.updateDepartures(remaining, false);
               this.error = error;
             });
         } else {
-          this.getOfflineDeparturesFor(line)
+          // Fetch failover data
+          this.fetchFailoverDepartures(line)
             .then(() => {
               remaining.splice(0, 1);
-              this.getDepartures(remaining, false);
+              this.updateDepartures(remaining, false);
             })
             .catch(error => {
               console.error(error);
@@ -142,12 +123,11 @@ export class DashboardComponent implements OnInit {
   }
 
   private fetchAllTransitLineDepartures(): void {
-    this.getDepartures(this.transitLines.slice(0));
+    this.updateDepartures(this.transitLines.slice(0));
     // TODO: Implement -> this.getDeferredDepartures(this.deferredTransitLines.slice(0));
   }
 
   ngOnInit() {
-    this.landscape = window.innerHeight < window.innerWidth ? true : false;
     this.fetchAllTransitLineDepartures();
   }
 
@@ -157,7 +137,7 @@ export class DashboardComponent implements OnInit {
   private getDeferredDeparturesFor(lineNumber: number) {
     return new Promise((resolve, reject) => {
       this.api
-        .getOfflineTimeSchedule(lineNumber)
+        .fetchFailover(lineNumber)
         .then(result => {
           let departures = [];
           result.forEach(transitDeparture => {
