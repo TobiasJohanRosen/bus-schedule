@@ -29,6 +29,5 @@ describe("App", () => {
       var webtext = page.toString().split(":", 2);
       expect(webtext.join(":")).toEqual(localTime);
     });
-    // .split(":", 2)
   });
 });
