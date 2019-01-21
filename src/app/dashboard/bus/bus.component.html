@@ -1,15 +1,20 @@
 <mat-card class="upper" *ngIf="nextDeparture">
   <div class="d-flex mat-display-1 mb-0 font-weight-normal">
-    <div class="flex-item">
+    <div class="flex-item d-flex align-items-center">
       <div
-        class="d-inline-block text-center py-1 mr-3"
+        class="d-inline-block text-center py-1 mr-3 align-middle"
         style="width: 82px; border-radius: 4px;"
         [style.background-color]="nextDeparture.color"
         [style.color]="nextDeparture.textColor"
       >
         {{ nextDeparture.line }}
       </div>
-      <div class="d-inline-block py-1">{{ nextDeparture.name }}</div>
+      <div class="d-inline-block">
+        <div>{{ nextDeparture.name }}</div>
+        <div style="font-size: 1rem; line-height: 20px; color: #bbbbbb;">
+          {{ nextDeparture.from }}
+        </div>
+      </div>
     </div>
     <div class="flex-item ml-auto">
       <div class="d-inline-block py-1">
