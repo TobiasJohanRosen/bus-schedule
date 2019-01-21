@@ -2,6 +2,7 @@ export class TransitDeparture {
   public name: string;
   public line: number;
   public departure: Date;
+  public from: string;
   public delayedDeparture: Date | null = null;
   public departing: number;
   public delayedDeparting: number | null;
@@ -26,6 +27,7 @@ export class TransitDeparture {
         ? 'regional'
         : 'unknown';
     this.name = rawLine['towards'];
+    this.from = raw['from']['name'].replace(' (Uppsala)', '');
 
     // Format name
     if (this.name.match(/(\svia\s)/)) {
