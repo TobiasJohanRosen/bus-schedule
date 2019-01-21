@@ -5,9 +5,13 @@ import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./dashboard.component";
 import { BusComponent } from "./bus/bus.component";
 import { SharedModule } from "../shared/shared.module";
+import { SplashComponent } from './splash/splash.component';
+import { LogoComponent } from './logo/logo.component';
+import { DeferredBusComponent } from './deferred-bus/deferred-bus.component';
+import { FatalComponent } from './fatal/fatal.component';
 
 @NgModule({
-  declarations: [DashboardComponent, BusComponent],
+  declarations: [DashboardComponent, BusComponent, SplashComponent, LogoComponent, DeferredBusComponent, FatalComponent],
   imports: [CommonModule, DashboardRoutingModule, SharedModule]
 })
 export class DashboardModule {}

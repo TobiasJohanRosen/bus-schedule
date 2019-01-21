@@ -1,153 +1,85 @@
-<div
-  class="d-flex flex-column py-3 align-items-stretch"
-  style="min-height: 100vh; background-image: url('./assets/background.png'); background-repeat: no-repeat; background-size: cover; background-position: center;"
->
-  <div class="container-fluid px-4">
-    <div class="float-left">
-      <svg
-        width="121px"
-        height="106px"
-        viewBox="0 0 121 106"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <title>NTI Gymnasiet - Logotyp (RGB)</title>
-        <defs></defs>
-        <g
-          id="Page-1"
-          stroke="none"
-          stroke-width="1"
-          fill="none"
-          fill-rule="evenodd"
-        >
-          <g
-            id="Start"
-            transform="translate(-214.000000, -4150.000000)"
-            fill="#FFFFFF"
-          >
-            <g
-              id="NTI-Gymnasiet---Logotyp-(RGB)"
-              transform="translate(214.000000, 4150.000000)"
-            >
-              <polyline
-                id="Fill-1"
-                points="83.7009823 71 83.7009823 36.5520589 73 36.5520589 73 28 103 28 103 36.5520589 92.2984283 36.5520589 92.2984283 71 83.7009823 71"
-              ></polyline>
-              <polyline
-                id="Fill-2"
-                points="40.4273773 68.1337079 32 68.1337079 32 26 34.2392894 26 55.5136941 50.2414664 55.5136941 26.9234413 64 26.9234413 64 69 61.7607106 69 40.4273773 45.6814091 40.4273773 68.1337079"
-              ></polyline>
-              <polygon
-                id="Fill-3"
-                points="112 71 121 71 121 28 112 28"
-              ></polygon>
-              <path
-                d="M45,8.49567214 L45,0 L0,0 L0,47.5706408 C0,80.0099848 16.1269726,90.3820053 42.4407258,104.6185 L45,106 L45,96.3784024 L44.6838073,96.206661 C20.8023938,83.2177662 8.34108409,75.1558141 8.34108409,47.5706408 L8.34108409,8.49508996 L45,8.49567214"
-                id="Fill-13"
-              ></path>
-            </g>
-          </g>
-        </g>
-      </svg>
-    </div>
-    <div class="d-flex justify-content-end align-items-center">
-      <h1
-        class="mr-3 mt-1 text-white text-center date-time-text d-inline-block text-left text-uppercase"
-        style="font-family: 'Roboto Mono', monospace;"
-      >
-        {{ clock | date: 'HH:mm:ss' }}
-      </h1>
-      <div
-        class="d-flex flex-column justify-content-center date-block text-uppercase text-center"
-      >
-        <div class="flex-item">
-          <h2
-            class="mat-title mb-0"
-            style="font-family: 'Roboto Mono', monospace;"
-          >
-            {{ clock | date: 'EE' }}
-          </h2>
-        </div>
-        <div class="flex-item">
-          <h1
-            class="mat-display-1 mb-0"
-            style="font-family: 'Roboto Mono', monospace;"
-          >
-            {{ clock | date: 'd' }}
-          </h1>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngFor="let transitLine of hasFetchedTransitLine">
-    <div
-      class="d-inline-block my-3 px-4 w-100"
-      *ngIf="transitDepartures[transitLine].length > 0"
-    >
-      <iw-bus [departures]="transitDepartures[transitLine]"></iw-bus>
-    </div>
-  </div>
-  <div class="d-flex flex-row my-3 px-4 w-100">
-    <mat-card class="upper p-2 mx-3">
-      <div class="d-flex">
-        <div
-          class="d-inline-block text-center py-1 mr-3 align-middle font-weight-normal"
-          style="width: 82px; border-radius: 4px; background-color: #30921C; color:#FFFFFF; font-size: 2rem;"
-        >
-          10
-        </div>
-        <div class="d-inline-block">
-          <div>Ringlinje</div>
-          <div style="font-size: 1rem; line-height: 20px; color: #bbbbbb;">
-            Subway :)
-          </div>
-        </div>
-        (15:00)
-      </div>
-    </mat-card>
-    <mat-card class="upper p-2 mx-3">
-      <div class="d-flex">
-        <div
-          class="d-inline-block text-center py-1 mr-3 align-middle font-weight-normal"
-          style="width: 82px; border-radius: 4px; background-color: #30921C; color:#FFFFFF; font-size: 2rem;"
-        >
-          1
-        </div>
-        <div class="d-inline-block">
-          <div>Vart åker bussen i första hand?</div>
-          <div style="font-size: 1rem; line-height: 20px; color: #bbbbbb;">
-            Någonstans?
-          </div>
-        </div>
-        (15:00)
-      </div>
-    </mat-card>
-    <mat-card class="upper p-2 mx-3">
-      <div class="d-flex">
-        <div
-          class="d-inline-block text-center py-1 mr-3 align-middle font-weight-normal"
-          style="width: 82px; border-radius: 4px; background-color: #DBBD2C; color:#000000; font-size: 2rem;"
-        >
-          809
-        </div>
-        <div class="d-inline-block">
-          <div>Knutby</div>
-          <div style="font-size: 1rem; line-height: 20px; color: #bbbbbb;">
-            Business park
-          </div>
-        </div>
-        (15:00)
-      </div>
-    </mat-card>
-  </div>
-
+<iw-splash [class.d-none]="!loading || fatal"></iw-splash>
+<iw-fatal *ngIf="fatal"></iw-fatal>
+<div [class.d-none]="loading || fatal">
   <div
-    class="fixed-bottom mb-5 container text-center"
-    style="max-width: 360px;"
-    *ngIf="error"
+    class="d-flex flex-column py-3 align-items-stretch"
+    style="min-height: 100vh; background-image: url('./assets/background.png'); background-repeat: no-repeat; background-size: cover; background-position: center;"
   >
-    <h3 class="mat-headline mb-0">Realtidsdata offline</h3>
-    <p class="mat-subheading-2">Detta beror på ett nätverksfel.</p>
+    <div class="container-fluid px-4">
+      <div class="float-left"><iw-logo></iw-logo></div>
+      <div class="d-flex justify-content-end align-items-center">
+        <h1
+          class="mr-3 mt-1 text-white text-center date-time-text d-inline-block text-left text-uppercase"
+          style="font-family: 'Roboto Mono', monospace;"
+        >
+          {{ clock | date: 'HH:mm:ss' }}
+        </h1>
+        <div
+          class="d-flex flex-column justify-content-center date-block text-uppercase text-center"
+        >
+          <div class="flex-item">
+            <h2
+              class="mat-title mb-0"
+              style="font-family: 'Roboto Mono', monospace;"
+            >
+              {{ clock | date: 'EE' }}
+            </h2>
+          </div>
+          <div class="flex-item">
+            <h1
+              class="mat-display-1 mb-0"
+              style="font-family: 'Roboto Mono', monospace;"
+            >
+              {{ clock | date: 'd' }}
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let transitLine of transitLines">
+      <div
+        class="d-inline-block my-3 px-4 w-100"
+        *ngIf="transitDepartures[transitLine].length > 0"
+      >
+        <iw-bus [departures]="transitDepartures[transitLine]"></iw-bus>
+      </div>
+      <div
+        class="d-inline-block my-3 px-4 w-100"
+        *ngIf="transitDepartures[transitLine].length === 0"
+      >
+        <mat-card class="upper animated fadeIn">
+          <div class="d-flex mat-display-1 mb-0 font-weight-normal">
+            <div class="flex-item d-flex align-items-center">
+              <div
+                class="d-inline-block text-center py-1 mr-3 align-middle"
+                style="width: 82px; border-radius: 4px; background-color: #272727;"
+              >
+                {{ transitLine }}
+              </div>
+              <div class="d-inline-block"></div>
+            </div>
+          </div>
+        </mat-card>
+        <mat-card class="lower">
+          <div class="d-flex">
+            <span>Linjen trafikeras inte för tillfället</span>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+    <div class="d-flex flex-row my-3 px-4 w-100">
+      <div *ngFor="let deferredDeparture of deferredDepartures">
+        <iw-deferred-bus [departure]="deferredDeparture"></iw-deferred-bus>
+      </div>
+    </div>
+
+    <div
+      class="fixed-bottom mb-5 container text-center"
+      style="max-width: 360px;"
+      *ngIf="error"
+    >
+      <h3 class="mat-headline mb-0">Realtidsdata offline</h3>
+      <p class="mat-subheading-2">Detta beror på ett nätverksfel.</p>
+    </div>
   </div>
 </div>

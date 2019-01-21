@@ -1,0 +1,31 @@
+<mat-card class="upper pt-2" *ngIf="departure">
+  <div class="d-flex mat-title my-0 font-weight-normal">
+    <div class="flex-item d-flex align-items-center mr-3">
+      <div class="d-inline-block">
+        <div>{{ departure.name }}</div>
+        <div style="font-size: 1rem; line-height: 20px; color: #bbbbbb;">
+          {{ departure.from }}
+        </div>
+      </div>
+    </div>
+    <div class="flex-item d-flex flex-column align-items-center">
+      <div
+        class="d-inline-block text-center py-1 mt-2 align-middle"
+        style="width: 82px; border-radius: 4px;"
+        [style.background-color]="departure.color"
+        [style.color]="departure.textColor"
+      >
+        {{ departure.line }}
+      </div>
+      <span *ngIf="departure.departing > 0">
+        <span *ngIf="departure.departing <= 15">
+          {{ departure.departing }} min
+        </span>
+        <span *ngIf="departure.departing > 15">
+          {{ departure.departingTime }}
+        </span>
+      </span>
+      <span class="text-uppercase" *ngIf="departure.departing <= 0">nu</span>
+    </div>
+  </div>
+</mat-card>

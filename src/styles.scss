@@ -1,4 +1,4 @@
-@import "~@angular/material/theming";
+@import '~@angular/material/theming';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -17,10 +17,10 @@ $mat-wasp: (
   700: #252525,
   800: #1f1f1f,
   900: #131313,
-  A100: #272727,
-  A200: #272727,
-  A400: #272727,
-  A700: #272727,
+  A100: #ffffff,
+  A200: #ffffff,
+  A400: #ffffff,
+  A700: #ffffff,
   contrast: (
     50: #000000,
     100: #000000,
@@ -67,7 +67,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
 }
 .lower {
-  background-color: map-get($mat-wasp, A100);
+  background-color: #272727;
   color: #eeeeee;
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;

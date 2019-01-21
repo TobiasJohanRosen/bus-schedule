@@ -13,7 +13,7 @@ export class TransitLineService {
   public fetchRealtime(transitLineNumber: number) {
     return this.http
       .post<Array<object>>(environment.endpoints.realtime, {
-        url: environment.transitLines[transitLineNumber]
+        url: environment.transitUrls[transitLineNumber]
       })
       .toPromise();
   }

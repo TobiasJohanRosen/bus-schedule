@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TransitLineService } from '../transit-line.service';
 import { TransitDeparture } from '../transit-departure';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'iw-dashboard',
@@ -10,6 +11,7 @@ import { TransitDeparture } from '../transit-departure';
 export class DashboardComponent implements OnInit {
   public transitLines = [6, 11, 770, 804];
   public deferredTransitLines = [1, 10, 809];
+  public deferredDepartures: Array<TransitDeparture> = [];
   public transitDepartures: {
     6: Array<TransitDeparture>;
     11: Array<TransitDeparture>;
@@ -23,22 +25,32 @@ export class DashboardComponent implements OnInit {
   };
 
   public error: string | null = null;
-
+  public fatal: boolean = false;
   public clock: Date = new Date();
-
-  public hasFetchedTransitLine: Array<number> = [];
-
   public deferred: Array<TransitDeparture> = [];
+  public loading: boolean = true;
 
-  constructor(private api: TransitLineService) {
+  private beginUpdates() {
+    setTimeout(
+      () => {
+        setInterval(() => {
+          this.fetchAllTransitLineDepartures();
+        }, 10 * 1000);
+        this.loading = false;
+      },
+      environment.production ? 10 : 2.5 * 1000
+    );
+  }
+
+  private startClock() {
     setInterval(() => {
       this.clock = new Date();
     }, 1000);
-    setTimeout(() => {
-      setInterval(() => {
-        this.fetchAllTransitLineDepartures();
-      }, 10 * 1000);
-    }, 5000);
+  }
+
+  constructor(private api: TransitLineService) {
+    this.beginUpdates();
+    this.startClock();
   }
 
   private fetchFailoverDepartures(lineNumber: number) {
@@ -53,9 +65,6 @@ export class DashboardComponent implements OnInit {
             }
           });
           this.transitDepartures[lineNumber] = departures;
-          if (!this.hasFetchedTransitLine.includes(lineNumber)) {
-            this.hasFetchedTransitLine.push(lineNumber);
-          }
           resolve();
         })
         .catch(error => {
@@ -78,9 +87,6 @@ export class DashboardComponent implements OnInit {
             }
           });
           this.transitDepartures[lineNumber] = departures;
-          if (!this.hasFetchedTransitLine.includes(lineNumber)) {
-            this.hasFetchedTransitLine.push(lineNumber);
-          }
           this.error = null;
           resolve();
         })
@@ -115,7 +121,7 @@ export class DashboardComponent implements OnInit {
             })
             .catch(error => {
               console.error(error);
-              this.error = error;
+              this.fatal = true;
             });
         }
       });
@@ -124,7 +130,8 @@ export class DashboardComponent implements OnInit {
 
   private fetchAllTransitLineDepartures(): void {
     this.updateDepartures(this.transitLines.slice(0));
-    // TODO: Implement -> this.getDeferredDepartures(this.deferredTransitLines.slice(0));
+    // TODO: Implement -> this.fetchDeferredDepartures(this.deferredTransitLines.slice(0));
+    this.fetchDeferredDepartures(this.deferredTransitLines.slice(0));
   }
 
   ngOnInit() {
@@ -134,7 +141,7 @@ export class DashboardComponent implements OnInit {
   /**
    * Deferred
    */
-  private getDeferredDeparturesFor(lineNumber: number) {
+  private fetchDeferredDeparturesFor(lineNumber: number) {
     return new Promise((resolve, reject) => {
       this.api
         .fetchFailover(lineNumber)
@@ -153,12 +160,13 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  private getDeferredDepartures(lineNumbers: Array<number>) {
+  private fetchDeferredDepartures(lineNumbers: Array<number>) {
     let deferredDepartures = [];
     lineNumbers.forEach(line => {
-      this.getDeferredDeparturesFor(line)
+      this.fetchDeferredDeparturesFor(line)
         .then(result => {
           deferredDepartures.push(result[0]);
+          this.deferredDepartures = deferredDepartures;
           console.log(deferredDepartures);
         })
         .catch(error => {
