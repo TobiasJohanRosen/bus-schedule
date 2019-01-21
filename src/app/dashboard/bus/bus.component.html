@@ -55,3 +55,8 @@
     <span class="ml-auto">{{ laterDeparture.departingTime }}</span>
   </div>
 </mat-card>
+<mat-card class="lower" *ngIf="!laterDeparture">
+  <div class="d-flex">
+    <span>Observera att detta är dagens sista avgång</span>
+  </div>
+</mat-card>

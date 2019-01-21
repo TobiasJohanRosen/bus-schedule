@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, ViewChild } from "@angular/core";
-import { TransitDeparture } from "src/app/transit-departure";
-import { MatRipple } from "@angular/material";
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { TransitDeparture } from 'src/app/transit-departure';
+import { MatRipple } from '@angular/material';
 
 @Component({
-  selector: "iw-bus",
-  templateUrl: "./bus.component.html",
-  styleUrls: ["./bus.component.scss"]
+  selector: 'iw-bus',
+  templateUrl: './bus.component.html',
+  styleUrls: ['./bus.component.scss']
 })
 export class BusComponent implements OnInit {
   public thisIsProgress: number;
@@ -34,6 +34,8 @@ export class BusComponent implements OnInit {
 
     if (this._departures.length > 1) {
       this.laterDeparture = this._departures[1];
+    } else {
+      this.laterDeparture = null;
     }
     this.thisIsProgress = Math.round(
       510 - 0.43 * (this.nextDeparture.departing * 60)

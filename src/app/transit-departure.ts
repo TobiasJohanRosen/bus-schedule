@@ -76,7 +76,7 @@ export class TransitDeparture {
     } else {
       this.name = failover['direction'].replace(' (Uppsala kn)', '');
       this.line = parseInt(failover['transportNumber']);
-      this.departure = new Date(failover['time']);
+      this.departure = new Date(`${failover['time']} ${failover['date']}`);
       this.from = failover['stop'];
       this.type =
         parseInt(failover['transportNumber']) < 99 ? 'city' : 'regional';
