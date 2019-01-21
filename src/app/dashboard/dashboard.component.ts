@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TransitLineService } from '../transit-line.service';
 import { TransitDeparture } from '../transit-departure';
+import { resolve } from 'url';
+import { reject } from 'q';
 
 @Component({
   selector: 'iw-dashboard',
@@ -8,6 +10,16 @@ import { TransitDeparture } from '../transit-departure';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  /*
+   * serial executes Promises sequentially.
+   * @param {funcs} An array of funcs that return promises.
+   * @example
+   * const urls = ['/url1', '/url2', '/url3']
+   * serial(urls.map(url => () => $.ajax(url)))
+   *     .then(console.log.bind(console))
+   * @see https://stackoverflow.com/questions/24586110/resolve-promises-one-after-another-i-e-in-sequence
+   */
+
   public transitLines = [6, 11, 770, 804];
   public _transitDepartures: {
     6: Array<TransitDeparture>;
@@ -52,38 +64,53 @@ export class DashboardComponent implements OnInit {
   }
 
   private getDeparturesFor(lineNumber: number) {
-    this.api
-      .getTimeSchedule(lineNumber)
-      .then(result => {
-        this._transitDepartures[lineNumber] = [];
-        result.forEach(transitDeparture => {
-          if (
-            transitDeparture['routeLinks'][0]['line']['lineNo'] === lineNumber
-          ) {
-            this._transitDepartures[lineNumber].push(
-              new TransitDeparture(transitDeparture)
-            );
+    return new Promise((resolve, reject) => {
+      this.api
+        .getTimeSchedule(lineNumber)
+        .then(result => {
+          this._transitDepartures[lineNumber] = [];
+          result.forEach(transitDeparture => {
+            if (
+              transitDeparture['routeLinks'][0]['line']['lineNo'] === lineNumber
+            ) {
+              this._transitDepartures[lineNumber].push(
+                new TransitDeparture(transitDeparture)
+              );
+            }
+          });
+          this.transitDepartures[lineNumber] = this._transitDepartures[
+            lineNumber
+          ];
+          if (!this.hasFetchedTransitLine.includes(lineNumber)) {
+            this.hasFetchedTransitLine.push(lineNumber);
           }
+          this.error = null;
+          resolve();
+        })
+        .catch(error => {
+          reject(error);
         });
-        this.transitDepartures[lineNumber] = this._transitDepartures[
-          lineNumber
-        ];
-        if (!this.hasFetchedTransitLine.includes(lineNumber)) {
-          this.hasFetchedTransitLine.push(lineNumber);
-        }
-        this.error = null;
-      })
-      .catch(error => {
-        console.error(error);
-        this.error = error;
+    });
+  }
+
+  private getDepartures(remaining: Array<number>) {
+    if (remaining.length) {
+      let line = remaining[0];
+      Promise.resolve().then(() => {
+        this.getDeparturesFor(line)
+          .then(() => {
+            remaining.splice(0, 1);
+            this.getDepartures(remaining);
+          })
+          .catch(error => {
+            this.error = error;
+          });
       });
+    }
   }
 
   private fetchAllTransitLineDepartures(): void {
-    this.getDeparturesFor(6);
-    this.getDeparturesFor(11);
-    this.getDeparturesFor(770);
-    this.getDeparturesFor(804);
+    this.getDepartures(this.transitLines);
   }
 
   ngOnInit() {
