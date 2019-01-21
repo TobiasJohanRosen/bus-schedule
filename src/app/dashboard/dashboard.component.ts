@@ -71,6 +71,7 @@ export class DashboardComponent implements OnInit {
         if (!this.hasFetchedTransitLine.includes(lineNumber)) {
           this.hasFetchedTransitLine.push(lineNumber);
         }
+        this.error = null;
       })
       .catch(error => {
         console.error(error);
