@@ -10,7 +10,7 @@ export class TransitLineService {
 
   public getTimeSchedule(transitLineNumber: number) {
     return this.http
-      .post<Array<object>>("https://relay.mwts.se", {
+      .post<Array<object>>(environment.endpoints.realtime, {
         url: environment.transitLines[transitLineNumber]
       })
       .toPromise();

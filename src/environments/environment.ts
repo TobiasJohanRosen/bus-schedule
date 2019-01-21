@@ -4,6 +4,9 @@
 
 export const environment = {
   production: false,
+  endpoints: {
+    realtime: 'https://relay.mwts.se/realtime.php'
+  },
   transitLines: {
     11: 'https://www.ul.se/api/journey/search?changeTimeType=0&dateTime=&from=Uppsala+Business+Park+Norra+(Uppsala)&fromPointId=700527&fromPointType=0&maxWalkDistance=3000&priorityType=0&to=Uppsala+Centralstation+(Uppsala)&toPointId=700600&toPointType=0&trafficTypes=1,2,3,4,5,6,7,8,9,10,11&travelWhenType=2&via=&viaPointId=&walkSpeedType=0',
     804: 'https://www.ul.se/api/journey/search?changeTimeType=0&dateTime=&from=Uppsala+Business+Park+Norra+(Uppsala)&fromPointId=700527&fromPointType=0&maxWalkDistance=3000&priorityType=0&to=Skolgatan+(Uppsala)&toPointId=700270&toPointType=0&trafficTypes=1,2,3,4,5,6,7,8,9,10,11&travelWhenType=2&via=&viaPointId=&walkSpeedType=0',
