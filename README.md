@@ -36,3 +36,8 @@ See the contributing file for more information.
 - Editor: Visual Studio Code
 - Visual Studio Code Extensions: [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 - Programming language: JavaScript (in the form of TypeScript)
+
+## Files to update
+- Dashobard.ts
+- Environment.ts
+- Environment.prod.ts

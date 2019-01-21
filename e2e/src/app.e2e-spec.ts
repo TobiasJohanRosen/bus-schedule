@@ -23,11 +23,23 @@ describe("App", () => {
     page.navigateTo();
     var date = new Date();
     var hours = date.getHours().toString();
-    var minutes = date.getMinutes().toString();
+    if (date.getMinutes() < 10) {
+      var minutes = 0 + date.getMinutes().toString();
+    } else {
+      var minutes = date.getMinutes().toString();
+    }
     var localTime = hours + ":" + minutes;
     page.retrievePageTime().then(page => {
       var webtext = page.toString().split(":", 2);
       expect(webtext.join(":")).toEqual(localTime);
     });
+  });
+
+  it("should display departure", () => {
+    // Comment
+  });
+
+  it("should display departure time", () => {
+    // page.navigateTo();
   });
 });
