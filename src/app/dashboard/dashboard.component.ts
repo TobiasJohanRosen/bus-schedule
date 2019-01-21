@@ -8,8 +8,8 @@ import { TransitDeparture } from '../transit-departure';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  public thisIsProgress: number;
   public transitLines = [6, 11, 770, 804];
+  public deferredTransitLines = [1, 10, 809];
   public _transitDepartures: {
     6: Array<TransitDeparture>;
     11: Array<TransitDeparture>;
@@ -41,6 +41,8 @@ export class DashboardComponent implements OnInit {
 
   public hasFetchedTransitLine: Array<number> = [];
 
+  public deferred: Array<TransitDeparture> = [];
+
   constructor(private api: TransitLineService) {
     setInterval(() => {
       this.clock = new Date();
@@ -50,6 +52,33 @@ export class DashboardComponent implements OnInit {
         this.fetchAllTransitLineDepartures();
       }, 10 * 1000);
     }, 5000);
+  }
+
+  private getOfflineDeparturesFor(lineNumber: number) {
+    return new Promise((resolve, reject) => {
+      this.api
+        .getOfflineTimeSchedule(lineNumber)
+        .then(result => {
+          this._transitDepartures[lineNumber] = [];
+          result.forEach(transitDeparture => {
+            if (parseInt(transitDeparture['transportNumber']) === lineNumber) {
+              this._transitDepartures[lineNumber].push(
+                new TransitDeparture(null, transitDeparture)
+              );
+            }
+          });
+          this.transitDepartures[lineNumber] = this._transitDepartures[
+            lineNumber
+          ];
+          if (!this.hasFetchedTransitLine.includes(lineNumber)) {
+            this.hasFetchedTransitLine.push(lineNumber);
+          }
+          resolve();
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   }
 
   private getDeparturesFor(lineNumber: number) {
@@ -77,33 +106,84 @@ export class DashboardComponent implements OnInit {
           resolve();
         })
         .catch(error => {
+          this.error = error;
           reject(error);
         });
     });
   }
 
-  private getDepartures(remaining: Array<number>) {
+  private getDepartures(remaining: Array<number>, online: boolean = true) {
     if (remaining.length) {
       let line = remaining[0];
       Promise.resolve().then(() => {
-        this.getDeparturesFor(line)
-          .then(() => {
-            remaining.splice(0, 1);
-            this.getDepartures(remaining);
-          })
-          .catch(error => {
-            this.error = error;
-          });
+        if (online) {
+          this.getDeparturesFor(line)
+            .then(() => {
+              remaining.splice(0, 1);
+              this.getDepartures(remaining);
+            })
+            .catch(error => {
+              this.getDepartures(remaining, false);
+              this.error = error;
+            });
+        } else {
+          this.getOfflineDeparturesFor(line)
+            .then(() => {
+              remaining.splice(0, 1);
+              this.getDepartures(remaining, false);
+            })
+            .catch(error => {
+              console.error(error);
+              this.error = error;
+            });
+        }
       });
     }
   }
 
   private fetchAllTransitLineDepartures(): void {
-    this.getDepartures(this.transitLines);
+    this.getDepartures(this.transitLines.slice(0));
+    // TODO: Implement -> this.getDeferredDepartures(this.deferredTransitLines.slice(0));
   }
 
   ngOnInit() {
     this.landscape = window.innerHeight < window.innerWidth ? true : false;
     this.fetchAllTransitLineDepartures();
+  }
+
+  /**
+   * Deferred
+   */
+  private getDeferredDeparturesFor(lineNumber: number) {
+    return new Promise((resolve, reject) => {
+      this.api
+        .getOfflineTimeSchedule(lineNumber)
+        .then(result => {
+          let departures = [];
+          result.forEach(transitDeparture => {
+            if (parseInt(transitDeparture['transportNumber']) === lineNumber) {
+              departures.push(new TransitDeparture(null, transitDeparture));
+            }
+          });
+          resolve(departures);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  private getDeferredDepartures(lineNumbers: Array<number>) {
+    let deferredDepartures = [];
+    lineNumbers.forEach(line => {
+      this.getDeferredDeparturesFor(line)
+        .then(result => {
+          deferredDepartures.push(result[0]);
+          console.log(deferredDepartures);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    });
   }
 }
