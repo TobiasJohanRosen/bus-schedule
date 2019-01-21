@@ -1,11 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { TransitLineService } from "../transit-line.service";
-import { TransitDeparture } from "../transit-departure";
+import { Component, OnInit } from '@angular/core';
+import { TransitLineService } from '../transit-line.service';
+import { TransitDeparture } from '../transit-departure';
 
 @Component({
-  selector: "iw-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"]
+  selector: 'iw-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   public thisIsProgress: number;
@@ -53,37 +53,53 @@ export class DashboardComponent implements OnInit {
   }
 
   private getDeparturesFor(lineNumber: number) {
-    this.api
-      .getTimeSchedule(lineNumber)
-      .then(result => {
-        this._transitDepartures[lineNumber] = [];
-        result.forEach(transitDeparture => {
-          if (
-            transitDeparture["routeLinks"][0]["line"]["lineNo"] === lineNumber
-          ) {
-            this._transitDepartures[lineNumber].push(
-              new TransitDeparture(transitDeparture)
-            );
+    return new Promise((resolve, reject) => {
+      this.api
+        .getTimeSchedule(lineNumber)
+        .then(result => {
+          this._transitDepartures[lineNumber] = [];
+          result.forEach(transitDeparture => {
+            if (
+              transitDeparture['routeLinks'][0]['line']['lineNo'] === lineNumber
+            ) {
+              this._transitDepartures[lineNumber].push(
+                new TransitDeparture(transitDeparture)
+              );
+            }
+          });
+          this.transitDepartures[lineNumber] = this._transitDepartures[
+            lineNumber
+          ];
+          if (!this.hasFetchedTransitLine.includes(lineNumber)) {
+            this.hasFetchedTransitLine.push(lineNumber);
           }
+          this.error = null;
+          resolve();
+        })
+        .catch(error => {
+          reject(error);
         });
-        this.transitDepartures[lineNumber] = this._transitDepartures[
-          lineNumber
-        ];
-        if (!this.hasFetchedTransitLine.includes(lineNumber)) {
-          this.hasFetchedTransitLine.push(lineNumber);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        this.error = error;
+    });
+  }
+
+  private getDepartures(remaining: Array<number>) {
+    if (remaining.length) {
+      let line = remaining[0];
+      Promise.resolve().then(() => {
+        this.getDeparturesFor(line)
+          .then(() => {
+            remaining.splice(0, 1);
+            this.getDepartures(remaining);
+          })
+          .catch(error => {
+            this.error = error;
+          });
       });
+    }
   }
 
   private fetchAllTransitLineDepartures(): void {
-    this.getDeparturesFor(6);
-    this.getDeparturesFor(11);
-    this.getDeparturesFor(770);
-    this.getDeparturesFor(804);
+    this.getDepartures(this.transitLines);
   }
 
   ngOnInit() {

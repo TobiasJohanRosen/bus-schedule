@@ -14,6 +14,21 @@ export class BusComponent implements OnInit {
     this._departures = departures;
 
     if (this._departures.length > 0) {
+      if (this.nextDeparture) {
+        if (
+          this.nextDeparture.departure.getTime() -
+            this._departures[0].departure.getTime() !=
+          0
+        ) {
+          console.log(
+            this.nextDeparture.departure,
+            this._departures[0].departure,
+            this.nextDeparture.departure.getTime() -
+              this._departures[0].departure.getTime()
+          );
+        }
+      }
+
       this.nextDeparture = this._departures[0];
     }
 
@@ -30,6 +45,8 @@ export class BusComponent implements OnInit {
     return this._departures;
   }
 
+  public deviation: { title: string; text: string; severity: number };
+
   public nextDeparture: TransitDeparture;
   public laterDeparture: TransitDeparture;
 
@@ -42,7 +59,7 @@ export class BusComponent implements OnInit {
       centered: true,
       animation: {
         enterDuration: 1000,
-        exitDuration: 5000
+        exitDuration: 1000
       }
     });
 
@@ -55,7 +72,7 @@ export class BusComponent implements OnInit {
       if (this.ripple) {
         this.launchRipple();
       }
-    }, 10000);
+    }, 15000);
   }
 
   ngOnInit() {}

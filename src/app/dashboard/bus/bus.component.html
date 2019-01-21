@@ -1,67 +1,51 @@
 <mat-card class="upper" *ngIf="nextDeparture">
-  <div class="d-flex h2 font-weight-normal">
-    <span>
-      {{ nextDeparture.line }} {{ nextDeparture.name }}
-      <span
-        *ngIf="nextDeparture.line === 6"
-        style="font-size: 60%; opacity: 0.7;"
-        >(Denna buss går inte från allianshallen)</span
+  <div class="d-flex mat-display-1 mb-0 font-weight-normal">
+    <div class="flex-item">
+      <div
+        class="d-inline-block text-center py-1 mr-3"
+        style="width: 82px; border-radius: 4px;"
+        [style.background-color]="nextDeparture.color"
+        [style.color]="nextDeparture.textColor"
       >
-    </span>
-    <span class="ml-auto" *ngIf="nextDeparture.departing > 0">
-      <div *ngIf="nextDeparture.departing <= 60">
-        {{ nextDeparture.departing }} min
-        <span style="font-size: 75%; opacity: .75;"
-          >({{ nextDeparture.departingTime }})</span
+        {{ nextDeparture.line }}
+      </div>
+      <div class="d-inline-block py-1">{{ nextDeparture.name }}</div>
+    </div>
+    <div class="flex-item ml-auto">
+      <div class="d-inline-block py-1">
+        <span *ngIf="nextDeparture.departing > 0">
+          <span *ngIf="nextDeparture.departing <= 15">
+            {{ nextDeparture.departing }} min
+          </span>
+          <span *ngIf="nextDeparture.departing > 15">
+            {{ nextDeparture.departingTime }}
+          </span>
+        </span>
+        <span class="text-uppercase" *ngIf="nextDeparture.departing <= 0"
+          >nu</span
         >
       </div>
-      <div *ngIf="nextDeparture.departing > 60">
-        {{ nextDeparture.departingTime }}
-      </div>
-    </span>
-    <span class="ml-auto" *ngIf="nextDeparture.departing <= 0">avgår nu</span>
-  </div>
-  <div>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="451"
-      height="32"
-      viewBox="0 0 451 32"
-      [style.fill]="nextDeparture.color"
-    >
-      <g transform="translate(-123 -597)">
-        <rect fill="" width="435" height="12" transform="translate(123 607)" />
-        <circle fill="" cx="16" cy="16" r="16" transform="translate(542 597)" />
-        <circle fill="" cx="16" cy="16" r="16" transform="translate(240 597)" />
-        <!-- attr.transform="{{ this.thisIsProgress }} {{ this.thisIsProgress }}" -->
-      </g>
-    </svg>
+    </div>
   </div>
 </mat-card>
-<div *ngFor="let deviation of nextDeparture.deviations">
+<div *ngIf="deviation">
   <mat-card
     class="deviation-danger"
     *ngIf="deviation.severity > 5"
     matRipple
     #ripple
-    [matRippleRadius]="1000"
+    [matRippleRadius]="720"
     [matRippleColor]="'rgba(32, 32, 32, 0.1)'"
   >
     <div class="d-flex flex-column">
-      <h5>{{ deviation.title }}</h5>
-      <span>{{ deviation.text }}</span>
+      <h5 class="mat-title mb-0">{{ deviation.title }}</h5>
+      <p class="mb-0">{{ deviation.text }}</p>
     </div>
   </mat-card>
 </div>
-
 <mat-card class="lower" *ngIf="laterDeparture">
   <div class="d-flex">
     <span>Nästa: {{ laterDeparture.line }} {{ laterDeparture.name }} </span>
     <span class="ml-auto">{{ laterDeparture.departingTime }}</span>
-  </div>
-</mat-card>
-<mat-card class="lower" *ngIf="!laterDeparture">
-  <div class="d-flex">
-    <span><i>Kan inte visa nästa avgång</i></span>
   </div>
 </mat-card>
