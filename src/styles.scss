@@ -91,3 +91,18 @@ body {
 .bg-red {
   background-color: #e23535;
 }
+
+.date-block {
+  height: 122px;
+  width: 122px;
+  background-color: #313131;
+  color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+}
+
+.date-time-text {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+  font-size: 8rem;
+  width: 384px;
+}

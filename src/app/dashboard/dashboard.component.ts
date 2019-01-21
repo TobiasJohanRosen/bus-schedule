@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit {
         }
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
         this.error = error;
       });
   }
