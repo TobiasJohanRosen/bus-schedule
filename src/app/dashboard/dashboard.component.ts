@@ -31,15 +31,12 @@ export class DashboardComponent implements OnInit {
   public loading: boolean = true;
 
   private beginUpdates() {
-    setTimeout(
-      () => {
-        setInterval(() => {
-          this.fetchAllTransitLineDepartures();
-        }, 10 * 1000);
-        this.loading = false;
-      },
-      environment.production ? 10 : 2.5 * 1000
-    );
+    setTimeout(() => {
+      setInterval(() => {
+        this.fetchAllTransitLineDepartures();
+      }, 10 * 1000);
+      this.loading = false;
+    }, (environment.production ? 10 : 2.5) * 1000);
   }
 
   private startClock() {
