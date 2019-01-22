@@ -104,6 +104,7 @@ export class DashboardComponent implements OnInit {
             .then(() => {
               remaining.splice(0, 1);
               this.updateDepartures(remaining);
+              this.fatal = false;
             })
             .catch(error => {
               this.updateDepartures(remaining, false);
@@ -115,6 +116,7 @@ export class DashboardComponent implements OnInit {
             .then(() => {
               remaining.splice(0, 1);
               this.updateDepartures(remaining, false);
+              this.fatal = false;
             })
             .catch(error => {
               console.error(error);
