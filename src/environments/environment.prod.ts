@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
   endpoints: {
-    realtime: 'http://cobalt-lama.local/realtime.php',
-    failover: 'http://cobalt-lama.local/failover.php'
+    realtime: 'http://localhost/api/realtime.php',
+    failover: 'http://localhost/api/failover.php'
   },
   transitLines: [6, 11, 770, 804],
   transitUrls: {
