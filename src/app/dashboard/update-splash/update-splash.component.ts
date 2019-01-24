@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'iw-splash',
-  templateUrl: './splash.component.html',
-  styleUrls: ['./splash.component.scss']
+  selector: 'iw-update-splash',
+  templateUrl: './update-splash.component.html',
+  styleUrls: ['./update-splash.component.scss']
 })
-export class SplashComponent implements OnInit {
+export class UpdateSplashComponent implements OnInit {
   public loading: boolean = false;
 
   constructor() {

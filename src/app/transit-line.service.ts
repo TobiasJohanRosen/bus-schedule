@@ -25,4 +25,8 @@ export class TransitLineService {
       })
       .toPromise();
   }
+
+  public checkIfUpdating() {
+    return this.http.get('updating.json').toPromise();
+  }
 }

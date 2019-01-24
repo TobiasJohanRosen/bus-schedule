@@ -29,14 +29,27 @@ export class DashboardComponent implements OnInit {
   public clock: Date = new Date();
   public deferred: Array<TransitDeparture> = [];
   public loading: boolean = true;
+  public updating: boolean = false;
 
   private beginUpdates() {
     setTimeout(() => {
       setInterval(() => {
         this.fetchAllTransitLineDepartures();
+        this.fetchUpdateStatus();
       }, 10 * 1000);
       this.loading = false;
-    }, (environment.production ? 10 : 2.5) * 1000);
+    }, (environment.production ? 15 : 2.5) * 1000);
+  }
+
+  private fetchUpdateStatus() {
+    this.api
+      .checkIfUpdating()
+      .then(() => {
+        this.updating = true;
+      })
+      .catch(() => {
+        this.updating = false;
+      });
   }
 
   private startClock() {
