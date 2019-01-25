@@ -7,7 +7,7 @@ import { TransitDeparture } from 'src/app/transit-departure';
   styleUrls: ['./deferred-bus.component.scss']
 })
 export class DeferredBusComponent implements OnInit {
-  @Input() departure: TransitDeparture;
+  @Input() departures: Array<TransitDeparture> = [];
 
   constructor() {}
 

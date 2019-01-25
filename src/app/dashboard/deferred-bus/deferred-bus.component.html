@@ -1,31 +1,33 @@
-<mat-card class="upper pt-2" *ngIf="departure">
+<mat-card class="deferred pt-2" *ngIf="departures.length > 0">
   <div class="d-flex mat-title my-0 font-weight-normal">
     <div class="flex-item d-flex align-items-center mr-3">
       <div class="d-inline-block">
-        <div>{{ departure.name }}</div>
+        <div>{{ departures[0].name }}</div>
         <div style="font-size: 1rem; line-height: 20px; color: #bbbbbb;">
-          {{ departure.from }}
+          {{ departures[0].from }}
         </div>
       </div>
     </div>
     <div class="flex-item d-flex flex-column align-items-center">
       <div
         class="d-inline-block text-center py-1 mt-2 align-middle"
-        style="width: 82px; border-radius: 4px;"
-        [style.background-color]="departure.color"
-        [style.color]="departure.textColor"
+        style="width: 72px; border-radius: 4px;"
+        [style.background-color]="departures[0].color"
+        [style.color]="departures[0].textColor"
       >
-        {{ departure.line }}
+        {{ departures[0].line }}
       </div>
-      <span *ngIf="departure.departing > 0">
-        <span *ngIf="departure.departing <= 15">
-          {{ departure.departing }} min
+      <span *ngIf="departures[0].departing > 0">
+        <span *ngIf="departures[0].departing <= 15">
+          {{ departures[0].departing }} min
         </span>
-        <span *ngIf="departure.departing > 15">
-          {{ departure.departingTime }}
+        <span *ngIf="departures[0].departing > 15">
+          {{ departures[0].departingTime }}
         </span>
       </span>
-      <span class="text-uppercase" *ngIf="departure.departing <= 0">nu</span>
+      <span class="text-uppercase" *ngIf="departures[0].departing <= 0"
+        >nu</span
+      >
     </div>
   </div>
 </mat-card>

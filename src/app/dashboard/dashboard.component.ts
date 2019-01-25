@@ -11,7 +11,15 @@ import { environment } from 'src/environments/environment';
 export class DashboardComponent implements OnInit {
   public transitLines = [6, 11, 770, 804];
   public deferredTransitLines = [1, 10, 809];
-  public deferredDepartures: Array<TransitDeparture> = [];
+  public deferredDepartures: {
+    1: Array<TransitDeparture>;
+    10: Array<TransitDeparture>;
+    809: Array<TransitDeparture>;
+  } = {
+    1: [],
+    10: [],
+    809: []
+  };
   public transitDepartures: {
     6: Array<TransitDeparture>;
     11: Array<TransitDeparture>;
@@ -30,13 +38,12 @@ export class DashboardComponent implements OnInit {
   public deferred: Array<TransitDeparture> = [];
   public loading: boolean = true;
   public updating: boolean = false;
+  private fetcher;
+  private retryAttempts: number = 3;
 
   private beginUpdates() {
     setTimeout(() => {
-      setInterval(() => {
-        this.fetchAllTransitLineDepartures();
-        this.fetchUpdateStatus();
-      }, 10 * 1000);
+      this.fetchAllTransitLineDepartures();
       this.loading = false;
     }, (environment.production ? 15 : 2.5) * 1000);
   }
@@ -109,7 +116,7 @@ export class DashboardComponent implements OnInit {
   private updateDepartures(
     remaining: Array<number>,
     online: boolean = true,
-    retry: boolean = false
+    retry: number = 0
   ) {
     if (remaining.length) {
       let line = remaining[0];
@@ -124,16 +131,16 @@ export class DashboardComponent implements OnInit {
             })
             .catch(error => {
               // If retry also fails, go offline
-              if (retry) {
-                this.updateDepartures(remaining, false, false);
+              if (retry >= this.retryAttempts) {
+                this.updateDepartures(remaining, false, 0);
                 this.error = error;
               } else {
                 console.warn(
-                  'Failed to fetch realtime data, will try again in 5s'
+                  'Failed to fetch realtime data, will try again in 10s'
                 );
                 setTimeout(() => {
-                  this.updateDepartures(remaining, true, true);
-                }, 5000);
+                  this.updateDepartures(remaining, true, retry + 1);
+                }, 10 * 1000);
               }
             });
         } else {
@@ -150,17 +157,22 @@ export class DashboardComponent implements OnInit {
             });
         }
       });
+    } else {
+      console.log('Queued to fetch transit line departures in 10s');
+      this.fetcher = setTimeout(() => {
+        this.fetchAllTransitLineDepartures();
+        this.fetchUpdateStatus();
+      }, 10 * 1000);
     }
   }
 
   private fetchAllTransitLineDepartures(): void {
     this.updateDepartures(this.transitLines.slice(0));
-    // TODO: Implement -> this.fetchDeferredDepartures(this.deferredTransitLines.slice(0));
     this.fetchDeferredDepartures(this.deferredTransitLines.slice(0));
   }
 
   ngOnInit() {
-    this.fetchAllTransitLineDepartures();
+    // Run on view initialization
   }
 
   /**
@@ -186,12 +198,11 @@ export class DashboardComponent implements OnInit {
   }
 
   private fetchDeferredDepartures(lineNumbers: Array<number>) {
-    let deferredDepartures = [];
     lineNumbers.forEach(line => {
       this.fetchDeferredDeparturesFor(line)
         .then(result => {
-          deferredDepartures.push(result[0]);
-          this.deferredDepartures = deferredDepartures;
+          this.deferredDepartures[line] = result;
+          console.log(this.deferredDepartures);
         })
         .catch(error => {
           console.error(error);

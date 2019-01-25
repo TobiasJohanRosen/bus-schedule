@@ -54,6 +54,11 @@ $iw-app-theme: mat-light-theme($iw-app-primary, $iw-app-accent, $iw-app-warn);
 body {
   background-color: map-get($mat-wasp, 900);
   color: #ffffff;
+  background: linear-gradient(
+    149deg,
+    rgba(25, 26, 39, 1) 0%,
+    rgba(29, 26, 42, 1) 100%
+  ) !important;
 }
 *:focus {
   outline: none !important;
@@ -63,6 +68,13 @@ body {
   color: #eeeeee;
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+}
+.deferred {
+  background-color: map-get($mat-wasp, 500);
+  color: #eeeeee;
+  border-radius: 4px !important;
   z-index: 100;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
 }
@@ -109,4 +121,12 @@ body {
 
 .d-invisible {
   opacity: 0;
+}
+
+.dashboard  {
+  min-height: 100vh;
+  // background-image: url('./assets/background.png');
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-position: center;
 }
