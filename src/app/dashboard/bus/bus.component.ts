@@ -20,12 +20,7 @@ export class BusComponent implements OnInit {
             this._departures[0].departure.getTime() !=
           0
         ) {
-          console.log(
-            this.nextDeparture.departure,
-            this._departures[0].departure,
-            this.nextDeparture.departure.getTime() -
-              this._departures[0].departure.getTime()
-          );
+          // Do something on departure update
         }
       }
 
@@ -40,7 +35,6 @@ export class BusComponent implements OnInit {
     this.thisIsProgress = Math.round(
       510 - 0.43 * (this.nextDeparture.departing * 60)
     );
-    console.log(this._departures);
   }
 
   get departures() {

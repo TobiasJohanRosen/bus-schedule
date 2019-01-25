@@ -101,13 +101,16 @@ export class DashboardComponent implements OnInit {
           resolve();
         })
         .catch(error => {
-          this.error = error;
           reject(error);
         });
     });
   }
 
-  private updateDepartures(remaining: Array<number>, online: boolean = true) {
+  private updateDepartures(
+    remaining: Array<number>,
+    online: boolean = true,
+    retry: boolean = false
+  ) {
     if (remaining.length) {
       let line = remaining[0];
       Promise.resolve().then(() => {
@@ -120,8 +123,18 @@ export class DashboardComponent implements OnInit {
               this.fatal = false;
             })
             .catch(error => {
-              this.updateDepartures(remaining, false);
-              this.error = error;
+              // If retry also fails, go offline
+              if (retry) {
+                this.updateDepartures(remaining, false, false);
+                this.error = error;
+              } else {
+                console.warn(
+                  'Failed to fetch realtime data, will try again in 5s'
+                );
+                setTimeout(() => {
+                  this.updateDepartures(remaining, true, true);
+                }, 5000);
+              }
             });
         } else {
           // Fetch failover data
@@ -179,7 +192,6 @@ export class DashboardComponent implements OnInit {
         .then(result => {
           deferredDepartures.push(result[0]);
           this.deferredDepartures = deferredDepartures;
-          console.log(deferredDepartures);
         })
         .catch(error => {
           console.error(error);
