@@ -2,7 +2,9 @@ export const environment = {
   production: true,
   endpoints: {
     realtime: 'http://localhost/api/realtime.php',
-    failover: 'http://localhost/api/failover.php'
+    failover: 'http://localhost/api/failover.php',
+    update: 'http://localhost/api/update.php',
+    debug: 'http://localhost/api/info.json'
   },
   transitLines: [6, 11, 770, 804],
   transitUrls: {

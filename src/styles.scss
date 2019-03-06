@@ -91,7 +91,12 @@ body {
 }
 .deviation-warn {
   background-color: #dfc544;
-  color: #eeeeee;
+  color: #000;
+  border-radius: 0px !important;
+}
+.deviation-success {
+  background-color: #30921c;
+  color: #eee;
   border-radius: 0px !important;
 }
 .bg-yellow  {

@@ -26,6 +26,10 @@ export class TransitLineService {
       .toPromise();
   }
 
+  public checkForUpdates() {
+    return this.http.get(environment.endpoints.update).toPromise();
+  }
+
   public checkIfUpdating() {
     return this.http.get('updating.json').toPromise();
   }

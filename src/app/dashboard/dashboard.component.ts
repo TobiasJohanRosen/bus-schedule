@@ -40,6 +40,7 @@ export class DashboardComponent implements OnInit {
   public updating: boolean = false;
   private fetcher;
   private retryAttempts: number = 3;
+  public backOnline = false;
 
   private beginUpdates() {
     setTimeout(() => {
@@ -104,6 +105,9 @@ export class DashboardComponent implements OnInit {
             }
           });
           this.transitDepartures[lineNumber] = departures;
+          if (this.error != null) {
+            this.showBackOnline();
+          }
           this.error = null;
           resolve();
         })
@@ -113,10 +117,22 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  private showBackOnline() {
+    this.backOnline = true;
+    setTimeout(() => {
+      this.backOnline = false;
+    }, 10000);
+  }
+
+  private pingUpdateScript() {
+    this.api.checkForUpdates();
+  }
+
   private updateDepartures(
     remaining: Array<number>,
     online: boolean = true,
-    retry: number = 0
+    retry: number = 0,
+    offlineCounter: number = 0
   ) {
     if (remaining.length) {
       let line = remaining[0];
@@ -127,10 +143,12 @@ export class DashboardComponent implements OnInit {
             .then(() => {
               remaining.splice(0, 1);
               this.updateDepartures(remaining);
+              this.pingUpdateScript();
               this.fatal = false;
             })
             .catch(error => {
               // If retry also fails, go offline
+              console.error(error);
               if (retry >= this.retryAttempts) {
                 this.updateDepartures(remaining, false, 0);
                 this.error = error;
@@ -148,7 +166,22 @@ export class DashboardComponent implements OnInit {
           this.fetchFailoverDepartures(line)
             .then(() => {
               remaining.splice(0, 1);
-              this.updateDepartures(remaining, false);
+              if (offlineCounter > 10) {
+                this.updateDepartures(
+                  remaining,
+                  true,
+                  this.retryAttempts - 1,
+                  0
+                );
+                console.log('Attempting to go online');
+              } else {
+                this.updateDepartures(
+                  remaining,
+                  false,
+                  retry,
+                  offlineCounter + 1
+                );
+              }
               this.fatal = false;
             })
             .catch(error => {

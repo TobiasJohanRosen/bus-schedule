@@ -74,14 +74,19 @@
         </div>
       </div>
     </div>
-
-    <div
-      class="fixed-bottom mb-5 container text-center"
-      style="max-width: 400px;"
-      *ngIf="error"
-    >
-      <h3 class="mat-headline mb-0">Realtidsdata offline</h3>
-      <p class="mat-subheading-2">Utgår från tidtabell</p>
-    </div>
   </div>
+</div>
+<div class="fixed-bottom" *ngIf="error">
+  <mat-card class="deviation-warn">
+    <div class="d-flex flex-column text-center">
+      <h5 class="mat-title mb-0">Offline – Utgår från tidtabell</h5>
+    </div>
+  </mat-card>
+</div>
+<div class="fixed-bottom" *ngIf="backOnline">
+  <mat-card class="deviation-success">
+    <div class="d-flex flex-column text-center">
+      <h5 class="mat-title mb-0">Online – Utgår från realtidsdata</h5>
+    </div>
+  </mat-card>
 </div>

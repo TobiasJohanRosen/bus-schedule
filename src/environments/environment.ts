@@ -6,7 +6,9 @@ export const environment = {
   production: false,
   endpoints: {
     realtime: 'https://relay.mwts.se/realtime.php',
-    failover: 'https://relay.mwts.se/failover.php'
+    failover: 'https://relay.mwts.se/failover.php',
+    update: 'https://relay.mwts.se/update.php',
+    debug: 'https://relay.mwts.se/info.json'
   },
   transitLines: [6, 11, 770, 804],
   transitUrls: {
