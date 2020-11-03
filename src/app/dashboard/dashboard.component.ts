@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TransitLineService } from '../transit-line.service';
 import { TransitDeparture } from '../transit-departure';
+import { StopDeparture } from '../stop-departure';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -9,6 +10,12 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  public stops = [];
+  public stopDepartures: {
+    'Polacksbacken': Array<StopDeparture>;
+  } = {
+    'Polacksbacken': [],
+  };
   public transitLines = [6, 11, 770, 804];
   public deferredTransitLines = [1, 10, 809];
   public deferredDepartures: {
@@ -45,6 +52,7 @@ export class DashboardComponent implements OnInit {
   private beginUpdates() {
     setTimeout(() => {
       this.fetchAllTransitLineDepartures();
+      this.fetchAllStopDepartures();
       this.loading = false;
     }, (environment.production ? 15 : 2.5) * 1000);
   }
@@ -67,10 +75,21 @@ export class DashboardComponent implements OnInit {
   }
 
   constructor(private api: TransitLineService) {
+    this.stops = Object.keys(environment.stops);
     this.beginUpdates();
     this.startClock();
   }
 
+  private showBackOnline() {
+    this.backOnline = true;
+    setTimeout(() => {
+      this.backOnline = false;
+    }, 10000);
+  }
+
+  private pingUpdateScript() {
+    this.api.checkForUpdates();
+  }
   private fetchFailoverDepartures(lineNumber: number) {
     return new Promise((resolve, reject) => {
       this.api
@@ -117,17 +136,60 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  private showBackOnline() {
-    this.backOnline = true;
-    setTimeout(() => {
-      this.backOnline = false;
-    }, 10000);
+  private fetchStopDepartures(stop: string) {
+    return new Promise((resolve, reject) => {
+      this.api.fetch(environment.stops[stop]).then(res => {
+        const dep = [];
+        let counter = 0;
+        res['departures'].forEach((departure: object) => {
+          if (counter > 5) return;
+          dep.push(new StopDeparture(departure));
+          counter++;
+        });
+        this.stopDepartures[stop] = dep;
+        if (this.error != null) {
+          this.showBackOnline();
+        }
+        this.error = null;
+        resolve();
+      }).catch(err => reject(err));
+    });
   }
 
-  private pingUpdateScript() {
-    this.api.checkForUpdates();
+  private updateStopDepartures(stops: Array<string>, online: boolean = true, retry: number = 0, offlineCounter: number = 0) {
+    if (!stops.length) {
+      console.log('No more stops to update, queuing update in 10 seconds.');
+      this.fetcher = setTimeout(() => {
+        this.fetchAllStopDepartures();
+        this.fetchUpdateStatus();
+      }, 10 * 1000);
+      return;
+    }
+    const stop = stops[0];
+    Promise.resolve().then(() => {
+      if (online) {
+        this.fetchStopDepartures(stop).then(() => {
+          stops.splice(0, 1);
+          this.updateStopDepartures(stops);
+          this.pingUpdateScript();
+          this.fatal = false;
+        }).catch(err => {
+          if (retry >= this.retryAttempts) {
+            this.updateStopDepartures(stops, false, 0);
+            this.error = err;
+            return;
+          }
+          console.warn('Failed to fetch realtime data, will try offline in 10s');
+          setTimeout(() => {
+            this.updateStopDepartures(stops, true, retry + 1);
+          }, 10 * 1000);
+        });
+      } else {
+        console.log(offlineCounter);
+        console.log('I should probably implement failover cache for thsi new stop stuff');
+      }
+    });
   }
-
   private updateDepartures(
     remaining: Array<number>,
     online: boolean = true,
@@ -198,10 +260,12 @@ export class DashboardComponent implements OnInit {
       }, 10 * 1000);
     }
   }
-
+  private fetchAllStopDepartures(): void {
+    this.updateStopDepartures(this.stops.slice(0));
+  }
   private fetchAllTransitLineDepartures(): void {
-    this.updateDepartures(this.transitLines.slice(0));
-    this.fetchDeferredDepartures(this.deferredTransitLines.slice(0));
+    //this.updateDepartures(this.transitLines.slice(0));
+    //this.fetchDeferredDepartures(this.deferredTransitLines.slice(0));
   }
 
   ngOnInit() {

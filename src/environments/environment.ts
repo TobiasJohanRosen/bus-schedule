@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   endpoints: {
-    realtime: 'https://relay.mwts.se/realtime.php',
-    failover: 'https://relay.mwts.se/failover.php',
-    update: 'https://relay.mwts.se/update.php',
-    debug: 'https://relay.mwts.se/info.json'
+    realtime: 'http://localhost:8000/realtime.php',
+    failover: 'http://localhost:8000/failover.php',
+    update: 'http://localhost:8000/update.php',
+    debug: 'http://localhost:8000/info.json'
   },
   transitLines: [6, 11, 770, 804],
   transitUrls: {
@@ -16,6 +16,11 @@ export const environment = {
     804: 'https://www.ul.se/api/journey/search?changeTimeType=0&dateTime=&from=Uppsala+Business+Park+Norra+(Uppsala)&fromPointId=700527&fromPointType=0&maxWalkDistance=3000&priorityType=0&to=Skolgatan+(Uppsala)&toPointId=700270&toPointType=0&trafficTypes=1,2,3,4,5,6,7,8,9,10,11&travelWhenType=2&via=&viaPointId=&walkSpeedType=0',
     770: 'https://www.ul.se/api/journey/search?changeTimeType=0&dateTime=&from=Uppsala+Business+Park+Norra+(Uppsala)&fromPointId=700527&fromPointType=0&maxWalkDistance=3000&priorityType=0&to=Mejramsvägen+(Storvreta)&toPointId=700612&toPointType=0&trafficTypes=1,2,3,4,5,6,7,8,9,10,11&travelWhenType=2&via=&viaPointId=&walkSpeedType=0',
     6: 'https://www.ul.se/api/journey/search?changeTimeType=0&dateTime=&from=Södra+Slavstavägen+(Uppsala)&fromPointId=700441&fromPointType=0&maxWalkDistance=3000&priorityType=0&to=Uppsala+Centralstation+(Uppsala)&toPointId=700600&toPointType=0&trafficTypes=1,2,3,4,5,6,7,8,9,10,11&travelWhenType=2&via=&viaPointId=&walkSpeedType=0'
+  },
+  stops: {
+    "Polacksbacken": "https://www.ul.se/api/stop/departures?stopId=700572",
+    "Grindstugan": "https://www.ul.se/api/stop/departures?stopId=700021",
+    "Vattholma Skola": "https://www.ul.se/api/stop/departures?stopId=780727"
   }
 };
 

@@ -1,35 +1,38 @@
-<mat-card class="upper animated fadeIn" *ngIf="nextDeparture">
+<!-- <mat-card class="upper animated fadeIn" *ngIf="nextDeparture"> -->
+<mat-card class="upper animated fadeIn">
   <div class="d-flex mat-display-1 mb-0 font-weight-normal">
-    <div class="flex-item d-flex align-items-center" style="width:100%;">
+    <div class="flex-item d-flex align-items-center">
       <div
         class="d-inline-block text-center py-1 mr-3 align-middle"
         style="width: 82px; border-radius: 4px;"
-        [style.background-color]="nextDeparture.color"
-        [style.color]="nextDeparture.textColor"
+        [style.background-color]="color"
+        [style.color]="textColor"
       >
-        {{ nextDeparture.line }}
-      </div>
-      <div class="d-inline-block">
-        <div>{{ nextDeparture.name }}</div>
-        <div style="font-size: 1rem; line-height: 20px; color: #bbbbbb;">
-          {{ nextDeparture.from }}
-        </div>
+        {{ name }}
       </div>
     </div>
     <div class="flex-item ml-auto">
       <div class="d-inline-block py-1">
-        <span *ngIf="nextDeparture.departing > 0">
-          <span *ngIf="nextDeparture.departing <= 15">
-            {{ nextDeparture.departing }} min
-          </span>
-          <span *ngIf="nextDeparture.departing > 15">
-            {{ nextDeparture.departingTime }}
-          </span>
-        </span>
-        <span class="text-uppercase" *ngIf="nextDeparture.departing <= 0"
-          >nu</span
-        >
       </div>
+    </div>
+  </div>
+</mat-card>
+<mat-card class="lower">
+  <div *ngFor="let dep of departures">
+    <div class="d-inline-block py-1 mr-3 m-2 align-middle" style="width:100%">
+        <div
+        class="text-center"
+        style="min-width:63px;border-radius:4px;font-size:25px;float:left"
+        [style.background-color]="dep.color"
+        [style.color]="dep.textColor"
+        >
+          {{ dep.lineNo }}
+        </div>
+        <div style="padding:10px; float:left;">{{ dep.towards }}</div>
+        <div *ngIf="dep.nextDepartureIn >= 1; else nowtime" style="float:right">{{ dep.nextDepartureIn }} min</div>
+        <ng-template #nowtime>
+          <div style="float:right">Now</div>
+        </ng-template>
     </div>
   </div>
 </mat-card>
@@ -54,6 +57,6 @@
     <span class="ml-auto">{{ laterDeparture.departingTime }}</span>
   </div>
 </mat-card>
-<mat-card class="lower" *ngIf="!laterDeparture">
+<mat-card class="lower" *ngIf="departures.length == 0">
   <div class="d-flex"><span>Hittade inga fler avgångar</span></div>
 </mat-card>
