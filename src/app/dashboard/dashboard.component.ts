@@ -142,7 +142,7 @@ export class DashboardComponent implements OnInit {
         const dep = [];
         let counter = 0;
         res['departures'].forEach((departure: object) => {
-          if (counter > 5) return;
+          if (counter > 2) return;
           dep.push(new StopDeparture(departure));
           counter++;
         });

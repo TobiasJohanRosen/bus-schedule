@@ -20,7 +20,7 @@ export const environment = {
   stops: {
     "Polacksbacken": "https://www.ul.se/api/stop/departures?stopId=700572",
     "Grindstugan": "https://www.ul.se/api/stop/departures?stopId=700021",
-    "Vattholma Skola": "https://www.ul.se/api/stop/departures?stopId=780727"
+    "Lundellska Skolan": "https://www.ul.se/api/stop/departures?stopId=700218"
   }
 };
 
