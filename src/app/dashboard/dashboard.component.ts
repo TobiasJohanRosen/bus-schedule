@@ -11,11 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DashboardComponent implements OnInit {
   public stops = [];
-  public stopDepartures: {
-    'Polacksbacken': Array<StopDeparture>;
-  } = {
-    'Polacksbacken': [],
-  };
+  public stopDepartures: { [ id: string ]: Array<StopDeparture>; } = {};
   public transitLines = [6, 11, 770, 804];
   public deferredTransitLines = [1, 10, 809];
   public deferredDepartures: {
@@ -76,6 +72,9 @@ export class DashboardComponent implements OnInit {
 
   constructor(private api: TransitLineService) {
     this.stops = Object.keys(environment.stops);
+    for (const stop of this.stops) {
+      this.stopDepartures[stop] = [];
+    }
     this.beginUpdates();
     this.startClock();
   }
