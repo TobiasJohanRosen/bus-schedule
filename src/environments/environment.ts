@@ -24,7 +24,7 @@ export const environment = {
     'Grindstugan': {
       url: 'https://www.ul.se/api/stop/departures?stopId=700021',
     },
-    'Lundellska Skolan': {
+    'Lundellska skolan': {
       url: 'https://www.ul.se/api/stop/departures?stopId=700218',
       directions: ['C', 'D']
     }

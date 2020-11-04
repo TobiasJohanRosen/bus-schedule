@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
   private retryAttempts: number = 3;
   public backOnline = false;
 
-  public bus_max = 3;
+  public bus_max = 4;
 
   private beginUpdates() {
     setTimeout(() => {
@@ -182,7 +182,7 @@ export class DashboardComponent implements OnInit {
       this.fetcher = setTimeout(() => {
         this.fetchAllStopDepartures();
         this.fetchUpdateStatus();
-      }, 10 * 1000);
+      }, 1000 * 1000);
       return;
     }
     const stop = stops[0];

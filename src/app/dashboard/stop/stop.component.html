@@ -1,5 +1,5 @@
 <!-- <mat-card class="upper animated fadeIn" *ngIf="nextDeparture"> -->
-<mat-card class="upper animated fadeIn">
+<mat-card class="upper animated fadeIn py-2">
   <div class="d-flex mat-display-1 mb-0 font-weight-normal">
     <div class="flex-item d-flex align-items-center justify-content-center">
       <div class="d-block text-center py-1 mr-3 align-middle name"
@@ -14,19 +14,18 @@
   </div>
 </mat-card>
 <mat-card class="lower d-flex flex-row justify-content-center">
-  <div *ngFor="let dir of directions" style="width:100%;">
+  <div *ngFor="let dir of directions">
     <div class="col-6" style="max-width:100%;">
       <h3>Läge {{ dir }}</h3>
-      <div *ngFor="let dep of departures" style="width:100%">
+      <div *ngFor="let dep of departures">
         <!-- Buss -->
-
-        <div class="d-inline-block py-1 mr-3 m-2 align-middle buss_grid" *ngIf="dep.direction == dir">
+        <div class="py-1 mr-3 m-2 align-middle buss_grid" style="max-height: 56px; height: 56px;" *ngIf="dep.direction == dir">
           <!-- Buss Number -->
           <div class="text-center buss_number" [style.background-color]="dep.color" [style.color]="dep.textColor">
             {{ dep.lineNo }}
           </div>
           <!-- Buss text -->
-          <div class="buss_text" style="padding:10px">{{ dep.towards }}</div>
+          <div class="buss_text">{{ dep.towards }}</div>
           <!-- Time -->
           <div class="buss_time" *ngIf="dep.nextDepartureIn >= 1; else nowtime">
             {{ dep.nextDepartureIn }} min</div>
