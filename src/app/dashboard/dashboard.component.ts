@@ -185,7 +185,7 @@ export class DashboardComponent implements OnInit {
       this.fetcher = setTimeout(() => {
         this.fetchAllStopDepartures();
         this.fetchUpdateStatus();
-      }, 1000 * 1000);
+      }, 10 * 1000);
       return;
     }
     const stop = stops[0];
