@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class DashboardComponent implements OnInit {
   public stops = [];
   public stopDepartures: { [ id: string ]: Array<StopDeparture>; } = {};
+  public stopDeparturesDirections: Array<Array<string>> = [];
   public transitLines = [6, 11, 770, 804];
   public deferredTransitLines = [1, 10, 809];
   public deferredDepartures: {
@@ -45,6 +46,8 @@ export class DashboardComponent implements OnInit {
   private retryAttempts: number = 3;
   public backOnline = false;
 
+  public bus_max = 3;
+
   private beginUpdates() {
     setTimeout(() => {
       this.fetchAllTransitLineDepartures();
@@ -72,6 +75,9 @@ export class DashboardComponent implements OnInit {
 
   constructor(private api: TransitLineService) {
     this.stops = Object.keys(environment.stops);
+    Object.keys(environment.stops).forEach((el) => {
+      this.stopDeparturesDirections[el] = [];
+    });
     for (const stop of this.stops) {
       this.stopDepartures[stop] = [];
     }
@@ -114,7 +120,7 @@ export class DashboardComponent implements OnInit {
       this.api
         .fetchRealtime(lineNumber)
         .then(result => {
-          let departures = [];
+          const departures = [];
           result.forEach(transitDeparture => {
             if (
               transitDeparture['routeLinks'][0]['line']['lineNo'] === lineNumber
@@ -137,14 +143,29 @@ export class DashboardComponent implements OnInit {
 
   private fetchStopDepartures(stop: string) {
     return new Promise((resolve, reject) => {
-      this.api.fetch(environment.stops[stop]).then(res => {
+      this.api.fetch(environment.stops[stop]['url']).then(res => {
         const dep = [];
-        let counter = 0;
         res['departures'].forEach((departure: object) => {
-          if (counter > 2) return;
-          dep.push(new StopDeparture(departure));
-          counter++;
+          let area_count = 0;
+          dep.forEach(el => {
+            if (el['direction'] == departure['area']) area_count++;
+          });
+          if(area_count >= this.bus_max) return;
+          if (environment.stops[stop]['directions'] &&
+             environment.stops[stop]['directions'].includes(departure['area'])) {
+            dep.push(new StopDeparture(departure));
+          } else if (!environment.stops[stop]['directions']) {
+            dep.push(new StopDeparture(departure));
+          }
         });
+        dep.forEach((el) => {
+          if (!this.stopDeparturesDirections[stop].includes(el['direction'])) {
+            this.stopDeparturesDirections[stop].push(el['direction']);
+          }
+        });
+        for (const key of Object.keys(this.stopDeparturesDirections)) {
+          this.stopDeparturesDirections[key].sort();
+        }
         this.stopDepartures[stop] = dep;
         if (this.error != null) {
           this.showBackOnline();

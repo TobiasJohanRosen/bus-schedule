@@ -11,6 +11,7 @@ import { MatRipple } from '@angular/material';
 export class StopComponent implements OnInit {
   public thisIsProgress: number;
   _departures: Array<StopDeparture> = [];
+  _directions: Array<string> = [];
   private _name: string;
   @Input() set name(name: string) {
     this._name = name;
@@ -47,6 +48,14 @@ export class StopComponent implements OnInit {
 
   get departures() {
     return this._departures;
+  }
+
+  @Input() set directions(directions: Array<string>) {
+    this._directions = directions;
+  }
+
+  get directions() {
+    return this._directions;
   }
 
   public deviation: { title: string; text: string; severity: number };

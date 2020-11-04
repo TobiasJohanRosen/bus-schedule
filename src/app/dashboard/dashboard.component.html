@@ -30,7 +30,7 @@
     <div *ngFor="let stop of stops">
 
       <div class="d-inline-block my-3 px-4 w-100" *ngIf="stopDepartures[stop].length > 0">
-        <iw-stop [name]="stop" [departures]="stopDepartures[stop]"></iw-stop>
+        <iw-stop [name]="stop" [departures]="stopDepartures[stop]" [directions]="stopDeparturesDirections[stop]"></iw-stop>
       </div>
 
       <div class="d-inline-block my-3 px-4 w-100" *ngIf="stopDepartures[stop].length === 0">
