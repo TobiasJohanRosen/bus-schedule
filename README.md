@@ -1,4 +1,4 @@
-# Iron Wasp
+# Bus-schedule
 
 We are to build an application (native or web) that will display the time table / next departure for busses in the nearby area.
 
