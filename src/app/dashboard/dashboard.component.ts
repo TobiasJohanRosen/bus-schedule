@@ -146,11 +146,14 @@ export class DashboardComponent implements OnInit {
       this.api.fetch(environment.stops[stop]['url']).then(res => {
         const dep = [];
         res['departures'].forEach((departure: object) => {
+          let stop_op = environment.stops[stop];
           let area_count = 0;
           dep.forEach(el => {
             if (el['direction'] == departure['area']) area_count++;
           });
-          if(area_count >= this.bus_max) return;
+          if(!stop_op['bus_count']) stop_op['bus_count'] = this.bus_max;
+          if (area_count >= stop_op['bus_count'])  return;
+          if (stop_op['ignore'] && stop_op['ignore'].includes(departure['line']['lineNo'])) return;
           if (environment.stops[stop]['directions'] &&
              environment.stops[stop]['directions'].includes(departure['area'])) {
             dep.push(new StopDeparture(departure));

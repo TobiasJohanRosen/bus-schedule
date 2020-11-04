@@ -20,13 +20,19 @@ export const environment = {
   stops: {
     'Polacksbacken': {
       url: 'https://www.ul.se/api/stop/departures?stopId=700572',
+      bus_count: 4
     },
     'Grindstugan': {
       url: 'https://www.ul.se/api/stop/departures?stopId=700021',
+      ignore: [
+        4, 12
+      ],
+      bus_count: 6
     },
     'Lundellska skolan': {
       url: 'https://www.ul.se/api/stop/departures?stopId=700218',
-      directions: ['C', 'D']
+      directions: ['C', 'D'],
+      bus_count: 2
     }
   }
 };
