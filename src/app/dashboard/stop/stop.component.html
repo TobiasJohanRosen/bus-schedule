@@ -2,12 +2,8 @@
 <mat-card class="upper animated fadeIn">
   <div class="d-flex mat-display-1 mb-0 font-weight-normal">
     <div class="flex-item d-flex align-items-center">
-      <div
-        class="d-inline-block text-center py-1 mr-3 align-middle"
-        style="width: 82px; border-radius: 4px;"
-        [style.background-color]="color"
-        [style.color]="textColor"
-      >
+      <div class="d-inline-block text-center py-1 mr-3 align-middle" style="width: 82px; border-radius: 4px;"
+        [style.background-color]="color" [style.color]="textColor">
         {{ name }}
       </div>
     </div>
@@ -17,46 +13,51 @@
     </div>
   </div>
 </mat-card>
-<mat-card class="lower">
-  <div *ngFor="let dep of departures">
-    <div class="d-inline-block py-1 mr-3 m-2 align-middle" style="width:100%">
-        <div
-        class="text-center"
-        style="min-width:63px;border-radius:4px;font-size:25px;float:left"
-        [style.background-color]="dep.color"
-        [style.color]="dep.textColor"
-        >
+<mat-card class="lower d-flex flex-row justify-content-center">
+  <div class="col-6">
+    <h3>Läge A</h3>
+    <div *ngFor="let dep of departures">
+      <!-- Buss -->
+
+      <div class="d-inline-block py-1 mr-3 m-2 align-middle buss_grid" *ngIf="dep.direction == 'A'">
+        <!-- Buss Number -->
+        <div class="text-center buss_number" [style.background-color]="dep.color" [style.color]="dep.textColor">
           {{ dep.lineNo }}
         </div>
-        <div style="padding:10px; float:left;">{{ dep.towards }}</div>
-        <div *ngIf="dep.nextDepartureIn >= 1; else nowtime" style="float:right">{{ dep.nextDepartureIn }} min</div>
+        <!-- Buss text -->
+        <div class="buss_text" style="padding:10px">{{ dep.towards }}</div>
+        <!-- Time -->
+        <div class="buss_time" *ngIf="dep.nextDepartureIn >= 1; else nowtime">
+          {{ dep.nextDepartureIn }} min</div>
+        <!-- Now -->
         <ng-template #nowtime>
-          <div style="float:right">Now</div>
+          <div class="buss_time">Nu</div>
         </ng-template>
+      </div>
     </div>
   </div>
-</mat-card>
-<div *ngIf="deviation">
-  <mat-card
-    class="deviation-danger"
-    *ngIf="deviation.severity > 5"
-    matRipple
-    #ripple
-    [matRippleRadius]="720"
-    [matRippleColor]="'rgba(32, 32, 32, 0.1)'"
-  >
-    <div class="d-flex flex-column">
-      <h5 class="mat-title mb-0">{{ deviation.title }}</h5>
-      <p class="mb-0">{{ deviation.text }}</p>
+
+  <div class="col-6">
+    <h3>Läge B</h3>
+    <div *ngFor="let dep of departures">
+      <!-- Buss -->
+
+      <div class="d-inline-block py-1 mr-3 m-2 align-middle buss_grid" *ngIf="dep.direction == 'B'">
+        <!-- Buss Number -->
+        <div class="text-center buss_number" [style.background-color]="dep.color" [style.color]="dep.textColor">
+          {{ dep.lineNo }}
+        </div>
+        <!-- Buss text -->
+        <div class="buss_text" style="padding:10px">{{ dep.towards }}</div>
+        <!-- Time -->
+        <div class="buss_time" *ngIf="dep.nextDepartureIn >= 1; else nowtime">
+          {{ dep.nextDepartureIn }} min</div>
+        <!-- Now -->
+        <ng-template #nowtime>
+          <div class="buss_time">Nu</div>
+        </ng-template>
+      </div>
     </div>
-  </mat-card>
-</div>
-<mat-card class="lower" *ngIf="laterDeparture">
-  <div class="d-flex">
-    <span>Nästa: {{ laterDeparture.line }} {{ laterDeparture.name }} </span>
-    <span class="ml-auto">{{ laterDeparture.departingTime }}</span>
   </div>
-</mat-card>
-<mat-card class="lower" *ngIf="departures.length == 0">
-  <div class="d-flex"><span>Hittade inga fler avgångar</span></div>
+  
 </mat-card>

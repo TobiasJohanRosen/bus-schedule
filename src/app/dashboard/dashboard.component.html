@@ -4,51 +4,41 @@
 <div [class.d-none]="loading || fatal || updating">
   <div class="d-flex flex-column py-3 align-items-stretch dashboard">
     <div class="container-fluid px-4">
-      <div class="float-left"><iw-logo></iw-logo></div>
+      <div class="float-left">
+        <iw-logo></iw-logo>
+      </div>
       <div class="d-flex justify-content-end align-items-center">
-        <h1
-          class="mr-3 mt-1 text-white text-center date-time-text d-inline-block text-left text-uppercase"
-          style="font-family: 'Roboto Mono', monospace;"
-        >
+        <h1 class="mr-3 mt-1 text-white text-center date-time-text d-inline-block text-left text-uppercase"
+          style="font-family: 'Roboto Mono', monospace;">
           {{ clock | date: 'HH:mm:ss' }}
         </h1>
-        <div
-          class="d-flex flex-column justify-content-center date-block text-uppercase text-center"
-        >
+        <div class="d-flex flex-column justify-content-center date-block text-uppercase text-center">
           <div class="flex-item">
-            <h2
-              class="mat-title mb-0"
-              style="font-family: 'Roboto Mono', monospace;"
-            >
+            <h2 class="mat-title mb-0" style="font-family: 'Roboto Mono', monospace;">
               {{ clock | date: 'EE' }}
             </h2>
           </div>
           <div class="flex-item">
-            <h1
-              class="mat-display-1 mb-0"
-              style="font-family: 'Roboto Mono', monospace;"
-            >
+            <h1 class="mat-display-1 mb-0" style="font-family: 'Roboto Mono', monospace;">
               {{ clock | date: 'd' }}
             </h1>
           </div>
         </div>
       </div>
     </div>
+
     <div *ngFor="let stop of stops">
+
       <div class="d-inline-block my-3 px-4 w-100" *ngIf="stopDepartures[stop].length > 0">
         <iw-stop [name]="stop" [departures]="stopDepartures[stop]"></iw-stop>
       </div>
-      <div
-        class="d-inline-block my-3 px-4 w-100"
-        *ngIf="stopDepartures[stop].length === 0"
-      >
+
+      <div class="d-inline-block my-3 px-4 w-100" *ngIf="stopDepartures[stop].length === 0">
         <mat-card class="upper animated fadeIn">
           <div class="d-flex mat-display-1 mb-0 font-weight-normal">
             <div class="flex-item d-flex align-items-center">
-              <div
-                class="d-inline-block text-center py-1 mr-3 align-middle"
-                style="padding: 10px; border-radius: 4px; background-color: #272727;"
-              >
+              <div class="d-inline-block text-center py-1 mr-3 align-middle"
+                style="padding: 10px; border-radius: 4px; background-color: #272727;">
                 {{ stop }}
               </div>
               <div class="d-inline-block"></div>
@@ -60,51 +50,22 @@
             <span>Hittade inga närliggande avgångar</span>
           </div>
         </mat-card>
+      </div>
+
     </div>
-    <!-- <div *ngFor="let transitLine of transitLines">
-      <div
-        class="d-inline-block my-3 px-4 w-100"
-        *ngIf="transitDepartures[transitLine].length > 0"
-      >
-        <iw-bus [departures]="transitDepartures[transitLine]"></iw-bus>
-      </div>
-      <div
-        class="d-inline-block my-3 px-4 w-100"
-        *ngIf="transitDepartures[transitLine].length === 0"
-      >
-        <mat-card class="upper animated fadeIn">
-          <div class="d-flex mat-display-1 mb-0 font-weight-normal">
-            <div class="flex-item d-flex align-items-center">
-              <div
-                class="d-inline-block text-center py-1 mr-3 align-middle"
-                style="width: 82px; border-radius: 4px; background-color: #272727;"
-              >
-                {{ transitLine }}
-              </div>
-              <div class="d-inline-block"></div>
-            </div>
-          </div>
-        </mat-card>
-        <mat-card class="lower">
-          <div class="d-flex">
-            <span>Hittade inga närliggande avgångar</span>
-          </div>
-        </mat-card>
-      </div>
-    </div> -->
+
   </div>
-</div>
-<div class="fixed-bottom" *ngIf="error">
-  <mat-card class="deviation-warn">
-    <div class="d-flex flex-column text-center">
-      <h5 class="mat-title mb-0">Offline – Utgår från tidtabell</h5>
-    </div>
-  </mat-card>
-</div>
-<div class="fixed-bottom" *ngIf="backOnline">
-  <mat-card class="deviation-success">
-    <div class="d-flex flex-column text-center">
-      <h5 class="mat-title mb-0">Online – Utgår från realtidsdata</h5>
-    </div>
-  </mat-card>
-</div>
+  <div class="fixed-bottom" *ngIf="error">
+    <mat-card class="deviation-warn">
+      <div class="d-flex flex-column text-center">
+        <h5 class="mat-title mb-0">Offline – Utgår från tidtabell</h5>
+      </div>
+    </mat-card>
+  </div>
+  <div class="fixed-bottom" *ngIf="backOnline">
+    <mat-card class="deviation-success">
+      <div class="d-flex flex-column text-center">
+        <h5 class="mat-title mb-0">Online – Utgår från realtidsdata</h5>
+      </div>
+    </mat-card>
+  </div>

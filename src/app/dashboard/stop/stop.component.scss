@@ -2,3 +2,30 @@ h2,
 .h2 {
   font-weight: 400;
 }
+
+.buss_grid {
+
+  .buss_number {
+    float: left;
+    display: inline-block;
+    width: min-content;
+    height: min-content;
+    width: 50px;
+    padding: 8px 0;
+    border-radius:4px;
+  }
+
+  .buss_text {
+    width: 190px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .buss_time {
+    float: right;
+    display: inline-block;
+  }
+}
+// style="min-width:63px;border-radius:4px;font-size:25px;float:left"
