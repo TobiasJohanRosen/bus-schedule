@@ -16,7 +16,7 @@ describe("App", () => {
       always in pending status and then receives a timeout.
     */
     browser.ignoreSynchronization = true;
-    expect(page.getTitleText()).toEqual("Iron Wasp");
+    expect(page.getTitleText()).toEqual("IronWasp");
   });
 
   it("should display the correct time", () => {
