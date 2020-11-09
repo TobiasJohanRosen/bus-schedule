@@ -1,0 +1,45 @@
+h2,
+.h2 {
+  font-weight: 400;
+}
+
+.name {
+  white-space: nowrap;
+  text-align: center;
+  width: 100%;
+}
+
+.buss_grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: stretch;
+  max-height: 56px;
+
+  .buss_number {
+    display: inline-block;
+    height: min-content;
+    width: 50px;
+    padding: 8px 0;
+    border-radius: 4px;
+  }
+
+  .buss_text {
+    width: 180px;
+    max-width: 180px;
+    max-height: 56px;
+    display: -webkit-box;
+    padding: 0 10px;
+    vertical-align: middle;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical;
+  }
+
+  .buss_time {
+    vertical-align: bottom;
+    display: inline-block;
+  }
+}

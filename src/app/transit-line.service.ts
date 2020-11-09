@@ -10,6 +10,12 @@ export class TransitLineService {
 
   public toTransitDepartures() {}
 
+  public fetch(url: string) {
+    return this.http.post<Array<object>>(environment.endpoints.realtime, {
+      url: url
+    }).toPromise();
+  }
+
   public fetchRealtime(transitLineNumber: number) {
     return this.http
       .post<Array<object>>(environment.endpoints.realtime, {
