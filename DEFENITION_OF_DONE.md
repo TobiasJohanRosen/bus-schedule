@@ -1,10 +1,11 @@
 # Defenition of done
 
-För att ett arbete ska räknas som “Done” skall denna kravlista vara uppfylld. Eventuella undantag kan ske om “Product owner” går med på det.
+For a card to be marked as "done" it shall pass the following checklist. Exceptions may be allowed if the Product Owner agrees to it.
 
-- Kommentarer klara som skall befinnas.
-- Koden incheckad och klar i vårt versionshanteringssystem.
-- Manuella tester är definerade och genomförda (se [TESTING](TESTING.md))
-- Gruppen skall ha en förståelse vad det är för något som skall vara klart. Och hur det fungerar.
-- Vid slutet av en sprint när en branch skall mergas ihop med master så måste all kod passera manuella tester. (Om tillämpbart)
-- Om tid finns skall även koden vara refaktoriserad och dålig praxis bör minimeras. I TypeScript kan detta innebära att man bör undvika otypade objekt som hämtats via en JSON API. * *host* * * *host* *
+- Comments shall exist for each piece of code.
+- Code shall be commited and working in our version control system.
+- Manual tests are defined and performed (see [TESTING][TESTING.md])
+- The group shall have a understanding if something is to be marked as done. And understand how it works.
+- All commits shall be clean and consice.
+- At the end of a sprint, all done branches shall be merged with main and pass existing manual tests. (If applicable)
+- All code shall be refactored and bad praxis shall be minimized. This implies that all variables in TypeScript needs to be typed, even those retrieved from a JSON API.
