@@ -10,6 +10,8 @@ import { FatalComponent } from './fatal/fatal.component';
 import { StopComponent } from './stop/stop.component';
 import { LogoComponent } from './logo/logo.component';
 
+import { testData } from './dashboard.component.test.data.js';
+
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
@@ -48,6 +50,10 @@ describe('DashboardComponent', () => {
     expect(component.stops[1]).toEqual("Grindstugan");
     expect(component.stops[2]).toEqual("Lundellska skolan");
   });
+
+  it("lmaoo", () => {
+    component.parseStopDepartures("Polacksbacken", testData);
+  })
 
   it("stops not null", () => {
     expect(typeof (component.stopDepartures["Polacksbacken"])).toEqual(typeof ([]));

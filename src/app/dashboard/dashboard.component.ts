@@ -89,7 +89,9 @@ export class DashboardComponent implements OnInit {
     });
   }*/
   public parseStopDepartures(stop: string, data: object) {
+    console.log(data);
     const dep = [];
+    if (Object.keys(data).length < 1) return;
     data['departures'].forEach((departure: object) => {
       const stop_op = environment.stops[stop];
       let area_count = 0;
