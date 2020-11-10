@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TransitLineService } from '../transit-line.service';
-import { TransitDeparture } from '../transit-departure';
 import { StopDeparture } from '../stop-departure';
 import { environment } from 'src/environments/environment';
 
@@ -13,25 +12,12 @@ export class DashboardComponent implements OnInit {
   public stops = [];
   public stopDepartures: { [ id: string ]: Array<StopDeparture>; } = {};
   public stopDeparturesDirections: Array<Array<string>> = [];
-  public transitLines = [6, 11, 770, 804];
-  public transitDepartures: {
-    6: Array<TransitDeparture>;
-    11: Array<TransitDeparture>;
-    770: Array<TransitDeparture>;
-    804: Array<TransitDeparture>;
-  } = {
-    6: [],
-    11: [],
-    770: [],
-    804: []
-  };
 
   public error: string | null = null;
   public fatal = false;
   public clock: Date = new Date();
   public loading = true;
   public updating = false;
-  private fetcher;
   private retryAttempts = 3;
   public backOnline = false;
 
@@ -39,7 +25,6 @@ export class DashboardComponent implements OnInit {
 
   private beginUpdates() {
     setTimeout(() => {
-      this.fetchAllTransitLineDepartures();
       this.fetchAllStopDepartures();
       this.loading = false;
     }, (environment.production ? 15 : 2.5) * 1000);
@@ -84,7 +69,7 @@ export class DashboardComponent implements OnInit {
   private pingUpdateScript() {
     this.api.checkForUpdates();
   }
-  private fetchFailoverDepartures(lineNumber: number) {
+  /*private fetchFailoverDepartures(lineNumber: number) {
     return new Promise((resolve, reject) => {
       this.api
         .fetchFailover(lineNumber)
@@ -102,33 +87,7 @@ export class DashboardComponent implements OnInit {
           reject(error);
         });
     });
-  }
-
-  private fetchDepartures(lineNumber: number) {
-    return new Promise((resolve, reject) => {
-      this.api
-        .fetchRealtime(lineNumber)
-        .then(result => {
-          const departures = [];
-          result.forEach(transitDeparture => {
-            if (
-              transitDeparture['routeLinks'][0]['line']['lineNo'] === lineNumber
-            ) {
-              departures.push(new TransitDeparture(transitDeparture));
-            }
-          });
-          this.transitDepartures[lineNumber] = departures;
-          if (this.error != null) {
-            this.showBackOnline();
-          }
-          this.error = null;
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  }
+  }*/
   public parseStopDepartures(stop: string, data: object) {
     const dep = [];
     data['departures'].forEach((departure: object) => {
@@ -174,7 +133,7 @@ export class DashboardComponent implements OnInit {
   private updateStopDepartures(stops: Array<string>, online: boolean = true, retry: number = 0, offlineCounter: number = 0) {
     if (!stops.length) {
       console.log('No more stops to update, queuing update in 10 seconds.');
-      this.fetcher = setTimeout(() => {
+      setTimeout(() => {
         this.fetchAllStopDepartures();
         this.fetchUpdateStatus();
       }, 10 * 1000);
@@ -202,45 +161,7 @@ export class DashboardComponent implements OnInit {
       } else {
         console.log(offlineCounter);
         console.log('I should probably implement failover cache for thsi new stop stuff');
-      }
-    });
-  }
-  private updateDepartures(
-    remaining: Array<number>,
-    online: boolean = true,
-    retry: number = 0,
-    offlineCounter: number = 0
-  ) {
-    if (remaining.length) {
-      const line = remaining[0];
-      Promise.resolve().then(() => {
-        if (online) {
-          // Fetch realtime data
-          this.fetchDepartures(line)
-            .then(() => {
-              remaining.splice(0, 1);
-              this.updateDepartures(remaining);
-              this.pingUpdateScript();
-              this.fatal = false;
-            })
-            .catch(error => {
-              // If retry also fails, go offline
-              console.error(error);
-              if (retry >= this.retryAttempts) {
-                this.updateDepartures(remaining, false, 0);
-                this.error = error;
-              } else {
-                console.warn(
-                  'Failed to fetch realtime data, will try again in 10s'
-                );
-                setTimeout(() => {
-                  this.updateDepartures(remaining, true, retry + 1);
-                }, 10 * 1000);
-              }
-            });
-        } else {
-          // Fetch failover data
-          this.fetchFailoverDepartures(line)
+          /*this.fetchFailoverDepartures(line)
             .then(() => {
               remaining.splice(0, 1);
               if (offlineCounter > 10) {
@@ -264,22 +185,12 @@ export class DashboardComponent implements OnInit {
             .catch(error => {
               console.error(error);
               this.fatal = true;
-            });
-        }
-      });
-    } else {
-      console.log('Queued to fetch transit line departures in 10s');
-      this.fetcher = setTimeout(() => {
-        this.fetchAllTransitLineDepartures();
-        this.fetchUpdateStatus();
-      }, 10 * 1000);
-    }
+            });*/
+      }
+    });
   }
   private fetchAllStopDepartures(): void {
     this.updateStopDepartures(this.stops.slice(0));
-  }
-  private fetchAllTransitLineDepartures(): void {
-    //this.updateDepartures(this.transitLines.slice(0));
   }
 
   ngOnInit() {
