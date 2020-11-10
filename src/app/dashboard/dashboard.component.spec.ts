@@ -30,7 +30,7 @@ describe('DashboardComponent', () => {
         HttpClientModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -41,5 +41,17 @@ describe('DashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it("should contain stops", () => {
+    expect(component.stops[0]).toEqual("Polacksbacken");
+    expect(component.stops[1]).toEqual("Grindstugan");
+    expect(component.stops[2]).toEqual("Lundellska skolan");
+  });
+
+  it("stops not null", () => {
+    expect(typeof (component.stopDepartures["Polacksbacken"])).toEqual(typeof ([]));
+    expect(typeof (component.stopDepartures["Grindstugan"])).toEqual(typeof ([]));
+    expect(typeof (component.stopDepartures["Lundellska skolan"])).toEqual(typeof ([]));
   });
 });
