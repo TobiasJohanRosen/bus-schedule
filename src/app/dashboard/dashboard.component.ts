@@ -14,16 +14,6 @@ export class DashboardComponent implements OnInit {
   public stopDepartures: { [ id: string ]: Array<StopDeparture>; } = {};
   public stopDeparturesDirections: Array<Array<string>> = [];
   public transitLines = [6, 11, 770, 804];
-  public deferredTransitLines = [1, 10, 809];
-  public deferredDepartures: {
-    1: Array<TransitDeparture>;
-    10: Array<TransitDeparture>;
-    809: Array<TransitDeparture>;
-  } = {
-    1: [],
-    10: [],
-    809: []
-  };
   public transitDepartures: {
     6: Array<TransitDeparture>;
     11: Array<TransitDeparture>;
@@ -37,13 +27,12 @@ export class DashboardComponent implements OnInit {
   };
 
   public error: string | null = null;
-  public fatal: boolean = false;
+  public fatal = false;
   public clock: Date = new Date();
-  public deferred: Array<TransitDeparture> = [];
-  public loading: boolean = true;
-  public updating: boolean = false;
+  public loading = true;
+  public updating = false;
   private fetcher;
-  private retryAttempts: number = 3;
+  private retryAttempts = 3;
   public backOnline = false;
 
   public bus_max = 4;
@@ -100,9 +89,9 @@ export class DashboardComponent implements OnInit {
       this.api
         .fetchFailover(lineNumber)
         .then(result => {
-          let departures = [];
+          const departures = [];
           result.forEach(transitDeparture => {
-            if (parseInt(transitDeparture['transportNumber']) === lineNumber) {
+            if (parseInt(transitDeparture['transportNumber'], 10) === lineNumber) {
               departures.push(new TransitDeparture(null, transitDeparture));
             }
           });
@@ -140,40 +129,42 @@ export class DashboardComponent implements OnInit {
         });
     });
   }
+  public parseStopDepartures(stop: string, data: object) {
+    const dep = [];
+    data['departures'].forEach((departure: object) => {
+      const stop_op = environment.stops[stop];
+      let area_count = 0;
+      dep.forEach(el => {
+        if (el['direction'] === departure['area']) area_count++;
+      });
+      if (!stop_op['bus_count']) stop_op['bus_count'] = this.bus_max;
+      if (area_count >= stop_op['bus_count'])  return;
+      if (stop_op['ignore'] && stop_op['ignore'].includes(departure['line']['lineNo'])) return;
+      if (environment.stops[stop]['directions'] &&
+         environment.stops[stop]['directions'].includes(departure['area'])) {
+        dep.push(new StopDeparture(departure));
+      } else if (!environment.stops[stop]['directions']) {
+        dep.push(new StopDeparture(departure));
+      }
+    });
+    dep.forEach((el) => {
+      if (!this.stopDeparturesDirections[stop].includes(el['direction'])) {
+        this.stopDeparturesDirections[stop].push(el['direction']);
+      }
+    });
+    for (const key of Object.keys(this.stopDeparturesDirections)) {
+      this.stopDeparturesDirections[key].sort();
+    }
+    this.stopDepartures[stop] = dep;
+    if (this.error != null) {
+      this.showBackOnline();
+    }
+    this.error = null;
 
+  }
   private fetchStopDepartures(stop: string) {
     return new Promise((resolve, reject) => {
-      this.api.fetch(environment.stops[stop]['url']).then(res => {
-        const dep = [];
-        res['departures'].forEach((departure: object) => {
-          let stop_op = environment.stops[stop];
-          let area_count = 0;
-          dep.forEach(el => {
-            if (el['direction'] == departure['area']) area_count++;
-          });
-          if(!stop_op['bus_count']) stop_op['bus_count'] = this.bus_max;
-          if (area_count >= stop_op['bus_count'])  return;
-          if (stop_op['ignore'] && stop_op['ignore'].includes(departure['line']['lineNo'])) return;
-          if (environment.stops[stop]['directions'] &&
-             environment.stops[stop]['directions'].includes(departure['area'])) {
-            dep.push(new StopDeparture(departure));
-          } else if (!environment.stops[stop]['directions']) {
-            dep.push(new StopDeparture(departure));
-          }
-        });
-        dep.forEach((el) => {
-          if (!this.stopDeparturesDirections[stop].includes(el['direction'])) {
-            this.stopDeparturesDirections[stop].push(el['direction']);
-          }
-        });
-        for (const key of Object.keys(this.stopDeparturesDirections)) {
-          this.stopDeparturesDirections[key].sort();
-        }
-        this.stopDepartures[stop] = dep;
-        if (this.error != null) {
-          this.showBackOnline();
-        }
-        this.error = null;
+      this.api.fetch(environment.stops[stop]['url']).then(_ => {
         resolve();
       }).catch(err => reject(err));
     });
@@ -220,7 +211,7 @@ export class DashboardComponent implements OnInit {
     offlineCounter: number = 0
   ) {
     if (remaining.length) {
-      let line = remaining[0];
+      const line = remaining[0];
       Promise.resolve().then(() => {
         if (online) {
           // Fetch realtime data
@@ -288,45 +279,9 @@ export class DashboardComponent implements OnInit {
   }
   private fetchAllTransitLineDepartures(): void {
     //this.updateDepartures(this.transitLines.slice(0));
-    //this.fetchDeferredDepartures(this.deferredTransitLines.slice(0));
   }
 
   ngOnInit() {
     // Run on view initialization
-  }
-
-  /**
-   * Deferred
-   */
-  private fetchDeferredDeparturesFor(lineNumber: number) {
-    return new Promise((resolve, reject) => {
-      this.api
-        .fetchFailover(lineNumber)
-        .then(result => {
-          let departures = [];
-          result.forEach(transitDeparture => {
-            if (parseInt(transitDeparture['transportNumber']) === lineNumber) {
-              departures.push(new TransitDeparture(null, transitDeparture));
-            }
-          });
-          resolve(departures);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  }
-
-  private fetchDeferredDepartures(lineNumbers: Array<number>) {
-    lineNumbers.forEach(line => {
-      this.fetchDeferredDeparturesFor(line)
-        .then(result => {
-          this.deferredDepartures[line] = result;
-          console.log(this.deferredDepartures);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    });
   }
 }
