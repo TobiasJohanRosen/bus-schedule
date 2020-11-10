@@ -164,7 +164,8 @@ export class DashboardComponent implements OnInit {
   }
   private fetchStopDepartures(stop: string) {
     return new Promise((resolve, reject) => {
-      this.api.fetch(environment.stops[stop]['url']).then(_ => {
+      this.api.fetch(environment.stops[stop]['url']).then(res => {
+        this.parseStopDepartures(stop, res);
         resolve();
       }).catch(err => reject(err));
     });
