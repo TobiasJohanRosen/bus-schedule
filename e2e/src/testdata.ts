@@ -1,4 +1,4 @@
-export let testData = {
+let testData = {
   "departures": [
     {
       "area": "B",
@@ -7,7 +7,7 @@ export let testData = {
         "longitude": 17.647858196817108
       },
       "nextDepartureTime": "13:26",
-      "nextDepartureIn": 0,
+      "nextDepartureIn": 15,
       "line": {
         "lineNo": 4,
         "name": "4",
@@ -22,7 +22,7 @@ export let testData = {
         "longitude": 17.6478250370397
       },
       "nextDepartureTime": "13:27",
-      "nextDepartureIn": 0,
+      "nextDepartureIn": 1,
       "line": {
         "lineNo": 4,
         "name": "4",
@@ -32,3 +32,4 @@ export let testData = {
     }
   ]
 };
+export { testData };

@@ -1,16 +1,16 @@
 import { AppPage } from "./app.po";
 import { browser } from "protractor";
-import { DashboardComponent } from "../../src/app/dashboard/dashboard.component"
-
+import { testData } from './testdata';
 describe("App", () => {
   let page: AppPage;
   beforeAll(() => {
     page = new AppPage();
     page.navigateTo();
+    browser.driver.sleep(3000);
   });
 
   it("should display title", () => {
-    /* 
+    /*
       Enabling ignoreSynchronization solves the issue with timeout.
       Reason is that protractor is waiting for element which is
       always in pending status and then receives a timeout.
@@ -39,6 +39,11 @@ describe("App", () => {
   });
 
   it("should display departure", () => {
+    const dashboardComponent = 'ng.probe(document.getElementsByTagName("iw-dashboard")[0]).componentInstance';
+    // Add our buses
+    let script = dashboardComponent+".parseStopDepartures('Polacksbacken', "+JSON.stringify(testData)+")";
+    browser.executeScript(script);
+    browser.sleep(1000);
     // Comment
   });
 
