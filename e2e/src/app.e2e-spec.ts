@@ -16,11 +16,13 @@ describe("App", () => {
       always in pending status and then receives a timeout.
     */
     browser.ignoreSynchronization = true;
-    expect(page.getTitleText()).toEqual("IronWasp");
+    expect(page.getTitleText()).toEqual("Bus Schedule");
   });
 
   it("should display the correct time", () => {
     page.navigateTo();
+    browser.driver.sleep(4000);
+    browser.waitForAngular();
     var date = new Date();
     var hours = date.getHours().toString();
     if (date.getMinutes() < 10) {
@@ -31,6 +33,9 @@ describe("App", () => {
     var localTime = hours + ":" + minutes;
     page.retrievePageTime().then(page => {
       var webtext = page.toString().split(":", 2);
+      webtext = webtext.map((str, index, arr)=>{
+        return Number(str).toString();
+      })
       expect(webtext.join(":")).toEqual(localTime);
     });
   });
