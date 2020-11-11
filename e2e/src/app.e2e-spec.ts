@@ -54,7 +54,4 @@ describe('App', () => {
     // Comment
   });
 
-  it("should display departure time", () => {
-    // page.navigateTo();
-  });
 });
