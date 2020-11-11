@@ -21,29 +21,6 @@ export class StopComponent implements OnInit {
   }
   @Input() set departures(departures: Array<StopDeparture>) {
     this._departures = departures;
-    /*
-    if (this._departures.length > 0) {
-      if (this.nextDeparture) {
-        if (
-          this.nextDeparture.departure.getTime() -
-            this._departures[0].departure.getTime() !=
-          0
-        ) {
-          // Do something on departure update
-        }
-      }
-
-      this.nextDeparture = this._departures[0];
-    }
-
-    if (this._departures.length > 1) {
-      this.laterDeparture = this._departures[1];
-    } else {
-      this.laterDeparture = null;
-    }
-    this.thisIsProgress = Math.round(
-      510 - 0.43 * (this.nextDeparture.departing * 60)
-    );*/
   }
 
   get departures() {
