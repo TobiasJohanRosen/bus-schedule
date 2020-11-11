@@ -29,6 +29,7 @@ export class StopDeparture {
     this.lineName = raw['line']['name'];
     this.towards = raw['line']['towards'];
 
+    // Not used, but represents bus, train, walk, etc.
     this.trafficType = raw['line']['trafficType'];
     if (this.lineNo < 100) {
       this.color = '#30921C';
