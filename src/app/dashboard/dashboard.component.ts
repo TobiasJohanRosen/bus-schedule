@@ -183,7 +183,7 @@ export class DashboardComponent implements OnInit {
             });*/
       }
     });
-    if (this.loading) setTimeout(() => { this.loading = false }, 500);
+    if (this.loading) setTimeout(() => { this.loading = false }, 1500);
   }
   private fetchAllStopDepartures(): void {
     this.updateStopDepartures(this.stops.slice(0));
