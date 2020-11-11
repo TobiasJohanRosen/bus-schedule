@@ -31,6 +31,9 @@ describe("App", () => {
     var localTime = hours + ":" + minutes;
     page.retrievePageTime().then(page => {
       var webtext = page.toString().split(":", 2);
+      webtext = webtext.map((str, index, arr)=>{
+        return Number(str).toString();
+      })
       expect(webtext.join(":")).toEqual(localTime);
     });
   });
