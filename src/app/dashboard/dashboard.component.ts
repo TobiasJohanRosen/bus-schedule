@@ -16,19 +16,11 @@ export class DashboardComponent implements OnInit {
   public error: string | null = null;
   public fatal = false;
   public clock: Date = new Date();
-  public loading = true;
   public updating = false;
   private retryAttempts = 3;
   public backOnline = false;
 
   public bus_max = 4;
-
-  private beginUpdates() {
-    setTimeout(() => {
-      this.fetchAllStopDepartures();
-      this.loading = false;
-    }, (environment.production ? 15 : 2.5) * 1000);
-  }
 
   private fetchUpdateStatus() {
     this.api
@@ -55,7 +47,7 @@ export class DashboardComponent implements OnInit {
     for (const stop of this.stops) {
       this.stopDepartures[stop] = [];
     }
-    this.beginUpdates();
+    this.fetchAllStopDepartures();
     this.startClock();
   }
 

@@ -1,12 +1,12 @@
 import { AppPage } from "./app.po";
 import { browser } from "protractor";
+import { DashboardComponent } from "../../src/app/dashboard/dashboard.component"
 
 describe("App", () => {
   let page: AppPage;
   beforeAll(() => {
     page = new AppPage();
     page.navigateTo();
-    browser.driver.sleep(3000);
   });
 
   it("should display title", () => {
