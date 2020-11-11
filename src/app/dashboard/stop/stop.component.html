@@ -16,7 +16,7 @@
 <mat-card class="lower d-flex flex-row justify-content-center" id="bus-stop-{{ name }}">
   <div *ngFor="let dir of directions">
     <div class="col-6" style="max-width:100%;">
-      <h4 class="ml-2">Läge {{ dir }}</h4>
+      <h4 class="ml-2 stop_location">Läge {{ dir }}</h4>
       <div *ngFor="let dep of departures">
         <!-- Buss -->
         <div class="py-1 mr-3 m-2 align-middle buss_grid" style="max-height: 56px; height: 56px;" *ngIf="dep.direction == dir">

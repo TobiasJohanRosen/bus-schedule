@@ -1,5 +1,5 @@
 import { AppPage } from './app.po';
-import { browser, by, element } from 'protractor';
+import { browser, By, by, element, WebElement } from 'protractor';
 import { testData } from './testdata';
 describe('App', () => {
   let page: AppPage;
@@ -37,21 +37,25 @@ describe('App', () => {
     browser.sleep(1000);
     const buses = element(by.id('bus-stop-Polacksbacken'));
     const departures = buses.all(by.xpath('div'));
-    departures.getText().then(el => {
-      const bus1 = el[0].split('\n');
-      const bus2 = el[1].split('\n');
-      expect(bus1[0]).toEqual('Läge A');
-      expect(bus1[1]).toEqual('4');
-      expect(bus1[2]).toEqual('Test Bus 1');
-      expect(bus1[3]).toEqual('1 min');
+    departures.getWebElements().then((busses: WebElement[]) => {
+      function expectElem(webElem: WebElement, className: string, expectString: string) {
+        webElem.findElement(By.className(className)).getAttribute("textContent").then((txt: string) => {
+          expect(txt.split(" ").join("")).toEqual(expectString.split(" ").join(""));
+        });
+      }
 
-      expect(bus2[0]).toEqual('Läge B');
-      expect(bus2[1]).toEqual('4');
-      expect(bus2[2]).toEqual('Test Bus 2');
-      expect(bus2[3]).toEqual('15 min');
+      // Bus 1
+      expectElem(busses[0], "stop_location", "Läge A");
+      expectElem(busses[0], "buss_number", "4");
+      expectElem(busses[0], "buss_text", "Test Bus 1");
+      expectElem(busses[0], "buss_time", "1 min");
+
+      // Bus 2
+      expectElem(busses[1], "stop_location", "Läge B");
+      expectElem(busses[1], "buss_number", "4");
+      expectElem(busses[1], "buss_text", "Test Bus 2");
+      expectElem(busses[1], "buss_time", "15 min");
+
     });
-    expect();
-    // Comment
   });
-
 });
