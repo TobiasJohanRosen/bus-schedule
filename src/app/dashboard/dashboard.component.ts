@@ -63,25 +63,6 @@ export class DashboardComponent implements OnInit {
   private pingUpdateScript() {
     this.api.checkForUpdates();
   }
-  /*private fetchFailoverDepartures(lineNumber: number) {
-    return new Promise((resolve, reject) => {
-      this.api
-        .fetchFailover(lineNumber)
-        .then(result => {
-          const departures = [];
-          result.forEach(transitDeparture => {
-            if (parseInt(transitDeparture['transportNumber'], 10) === lineNumber) {
-              departures.push(new TransitDeparture(null, transitDeparture));
-            }
-          });
-          this.transitDepartures[lineNumber] = departures;
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  }*/
   public parseStopDepartures(stop: string, data: object) {
     const dep = [];
     if (Object.keys(data).length < 1) return;
@@ -156,31 +137,6 @@ export class DashboardComponent implements OnInit {
       } else {
         console.log(offlineCounter);
         console.log('I should probably implement failover cache for thsi new stop stuff');
-          /*this.fetchFailoverDepartures(line)
-            .then(() => {
-              remaining.splice(0, 1);
-              if (offlineCounter > 10) {
-                this.updateDepartures(
-                  remaining,
-                  true,
-                  this.retryAttempts - 1,
-                  0
-                );
-                console.log('Attempting to go online');
-              } else {
-                this.updateDepartures(
-                  remaining,
-                  false,
-                  retry,
-                  offlineCounter + 1
-                );
-              }
-              this.fatal = false;
-            })
-            .catch(error => {
-              console.error(error);
-              this.fatal = true;
-            });*/
       }
     });
     if (this.loading) setTimeout(() => { this.loading = false }, 1500);
