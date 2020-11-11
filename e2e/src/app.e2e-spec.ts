@@ -21,20 +21,11 @@ describe("App", () => {
 
   it("should display the correct time", () => {
     browser.waitForAngular();
-    var date = new Date();
-    var hours = ("0" + date.getHours().toString()).slice(-2);
-    if (date.getMinutes() < 10) {
-      var minutes = 0 + date.getMinutes().toString();
-    } else {
-      var minutes = date.getMinutes().toString();
-    }
-    var localTime = hours + ":" + minutes;
-    page.retrievePageTime().then(page => {
-      var webtext = page.toString().split(":", 2);
-      webtext = webtext.map((str, index, arr)=>{
-        return Number(str).toString();
-      })
-      expect(webtext.join(":")).toEqual(localTime);
+    let date = new Date();
+    let hours = ("0" + date.getHours().toString()).slice(-2);
+    let minutes = ("0" + date.getMinutes().toString()).slice(-2);
+    page.retrievePageTime().then(titleText => {
+      expect(titleText.slice(0, 5)).toEqual(hours + ":" + minutes);
     });
   });
 
