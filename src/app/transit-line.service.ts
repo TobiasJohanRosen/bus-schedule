@@ -16,22 +16,6 @@ export class TransitLineService {
     }).toPromise();
   }
 
-  public fetchRealtime(transitLineNumber: number) {
-    return this.http
-      .post<Array<object>>(environment.endpoints.realtime, {
-        url: environment.transitUrls[transitLineNumber]
-      })
-      .toPromise();
-  }
-
-  public fetchFailover(transitLineNumber: number) {
-    return this.http
-      .post<Array<object>>(environment.endpoints.failover, {
-        line: transitLineNumber
-      })
-      .toPromise();
-  }
-
   public checkForUpdates() {
     return this.http.get(environment.endpoints.update).toPromise();
   }
