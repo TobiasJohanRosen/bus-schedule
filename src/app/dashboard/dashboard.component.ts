@@ -17,10 +17,12 @@ export class DashboardComponent implements OnInit {
   public fatal = false;
   public clock: Date = new Date();
   public updating = false;
+  public loading = true;
   private retryAttempts = 3;
   public backOnline = false;
 
   public bus_max = 4;
+
 
   private fetchUpdateStatus() {
     this.api
@@ -181,6 +183,7 @@ export class DashboardComponent implements OnInit {
             });*/
       }
     });
+    if (this.loading) setTimeout(() => { this.loading = false }, 500);
   }
   private fetchAllStopDepartures(): void {
     this.updateStopDepartures(this.stops.slice(0));
