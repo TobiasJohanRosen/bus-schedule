@@ -3,26 +3,26 @@ import { browser } from "protractor";
 
 describe("App", () => {
   let page: AppPage;
-
-  beforeEach(() => {
+  beforeAll(() => {
     page = new AppPage();
+    page.navigateTo();
+    browser.driver.sleep(3000);
   });
 
   it("should display title", () => {
-    page.navigateTo();
     /* 
       Enabling ignoreSynchronization solves the issue with timeout.
       Reason is that protractor is waiting for element which is
       always in pending status and then receives a timeout.
     */
     browser.ignoreSynchronization = true;
-    expect(page.getTitleText()).toEqual("IronWasp");
+    expect(page.getTitleText()).toEqual("Bus Schedule");
   });
 
   it("should display the correct time", () => {
-    page.navigateTo();
+    browser.waitForAngular();
     var date = new Date();
-    var hours = date.getHours().toString();
+    var hours = ("0" + date.getHours().toString()).slice(-2);
     if (date.getMinutes() < 10) {
       var minutes = 0 + date.getMinutes().toString();
     } else {

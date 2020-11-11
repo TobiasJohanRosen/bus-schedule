@@ -100,6 +100,17 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "IronWasp:serve:production"
+            }
+          }
+        },
+        "e2e_old": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
             "devServerTarget": "IronWasp:serve"
           },
           "configurations": {
