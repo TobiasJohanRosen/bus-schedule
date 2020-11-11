@@ -11,7 +11,7 @@ let testData = {
       "line": {
         "lineNo": 4,
         "name": "4",
-        "towards": "Test Bus 1",
+        "towards": "Test Bus 2",
         "trafficType": 1
       }
     },
@@ -26,7 +26,7 @@ let testData = {
       "line": {
         "lineNo": 4,
         "name": "4",
-        "towards": "Test Bus 2",
+        "towards": "Test Bus 1",
         "trafficType": 1
       }
     }
