@@ -1,11 +1,8 @@
-import { AppPage } from './app.po';
 import { browser, By, by, element, WebElement } from 'protractor';
 import { testData } from './testdata';
 describe('App', () => {
-  let page: AppPage;
   beforeAll(() => {
-    page = new AppPage();
-    page.navigateTo();
+    browser.get('/');
     browser.driver.sleep(3000);
   });
 
@@ -16,7 +13,7 @@ describe('App', () => {
       always in pending status and then receives a timeout.
     */
     browser.ignoreSynchronization = true;
-    expect(page.getTitleText()).toEqual('Bus Schedule');
+    expect(browser.getTitle()).toEqual('Bus Schedule');
   });
 
   it('should display the correct time', () => {
@@ -24,9 +21,10 @@ describe('App', () => {
     const date = new Date();
     const hours = ('0' + date.getHours().toString()).slice(-2);
     const minutes = ('0' + date.getMinutes().toString()).slice(-2);
-    page.retrievePageTime().then(titleText => {
-      expect(titleText.slice(0, 5)).toEqual(hours + ':' + minutes);
-    });
+    element(by.xpath('/html/body/app-root/iw-dashboard/div/div/div[1]/div[2]/h1')).getText()
+      .then(titleText => {
+        expect(titleText.slice(0, 5)).toEqual(hours + ':' + minutes);
+      });
   });
 
   /**

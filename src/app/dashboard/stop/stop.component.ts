@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { TransitDeparture } from 'src/app/transit-departure';
 import { StopDeparture } from 'src/app/stop-departure';
 import { MatRipple } from '@angular/material';
 
@@ -36,9 +35,6 @@ export class StopComponent implements OnInit {
   }
 
   public deviation: { title: string; text: string; severity: number };
-
-  public nextDeparture: TransitDeparture;
-  public laterDeparture: TransitDeparture;
 
   @ViewChild(MatRipple) ripple: MatRipple;
 

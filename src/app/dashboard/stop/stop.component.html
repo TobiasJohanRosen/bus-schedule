@@ -1,25 +1,18 @@
-<!-- <mat-card class="upper animated fadeIn" *ngIf="nextDeparture"> -->
+<!-- Bus stop name -->
 <mat-card class="upper animated fadeIn py-2">
-  <div class="d-flex mat-display-1 mb-0 font-weight-normal">
-    <div class="flex-item d-flex align-items-center justify-content-center">
-      <div class="d-block text-center py-1 mr-3 align-middle name"
-        [style.background-color]="color" [style.color]="textColor">
-        {{ name }}
-      </div>
-    </div>
-    <div class="flex-item ml-auto">
-      <div class="d-inline-block py-1">
-      </div>
-    </div>
+  <div class="d-flex align-items-center justify-content-start py-1 name mat-display-1">
+    {{ name }}
   </div>
 </mat-card>
 <mat-card class="lower d-flex flex-row justify-content-center" id="bus-stop-{{ name }}">
   <div *ngFor="let dir of directions">
     <div class="col-6" style="max-width:100%;">
+      <!-- Each bus stop location -->
       <h4 class="ml-2 stop_location">Läge {{ dir }}</h4>
       <div *ngFor="let dep of departures">
         <!-- Buss -->
-        <div class="py-1 mr-3 m-2 align-middle buss_grid" style="max-height: 56px; height: 56px;" *ngIf="dep.direction == dir">
+        <div class="py-1 mr-3 m-2 align-middle buss_grid" style="max-height: 56px; height: 56px;"
+          *ngIf="dep.direction == dir">
           <!-- Buss Number -->
           <div class="text-center buss_number" [style.background-color]="dep.color" [style.color]="dep.textColor">
             {{ dep.lineNo }}

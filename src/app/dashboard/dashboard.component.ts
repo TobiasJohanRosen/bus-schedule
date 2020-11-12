@@ -10,22 +10,21 @@ import { environment } from 'src/environments/environment';
 })
 export class DashboardComponent implements OnInit {
   public stops = [];
-  public stopDepartures: { [ id: string ]: Array<StopDeparture>; } = {};
+  public stopDepartures: { [id: string]: Array<StopDeparture>; } = {};
   public stopDeparturesDirections: Array<Array<string>> = [];
 
   public error: string | null = null;
   public fatal = false;
   public clock: Date = new Date();
-  public updating = false;
   public loading = true;
   private retryAttempts = 3;
   public backOnline = false;
   public bus_max = 4;
 
   /**
-   * This contructor will initalize all needed variables for each stop.
+   * This constructor will initialize all needed variables for each stop.
    * This needs to be updated in the future if the site will be using mainly buses,
-   * as they are fetched from the stop iteself.
+   * as they are fetched from the stop itself.
    */
   constructor(private api: TransitLineService) {
     this.stops = Object.keys(environment.stops);
@@ -37,21 +36,6 @@ export class DashboardComponent implements OnInit {
     }
     this.fetchAllStopDepartures();
     this.startClock();
-  }
-
-  /**
-   * This function updates the component variable `updating` if the API
-   * is currently in the process of updating the offline cache.
-   */
-  private fetchUpdateStatus() {
-    this.api
-      .checkIfUpdating()
-      .then(() => {
-        this.updating = true;
-      })
-      .catch(() => {
-        this.updating = false;
-      });
   }
 
   /**
@@ -89,10 +73,10 @@ export class DashboardComponent implements OnInit {
         if (el['direction'] === departure['area']) area_count++;
       });
       if (!stop_op['bus_count']) stop_op['bus_count'] = this.bus_max;
-      if (area_count >= stop_op['bus_count'])  return;
+      if (area_count >= stop_op['bus_count']) return;
       if (stop_op['ignore'] && stop_op['ignore'].includes(departure['line']['lineNo'])) return;
       if (environment.stops[stop]['directions'] &&
-         environment.stops[stop]['directions'].includes(departure['area'])) {
+        environment.stops[stop]['directions'].includes(departure['area'])) {
         dep.push(new StopDeparture(departure));
       } else if (!environment.stops[stop]['directions']) {
         dep.push(new StopDeparture(departure));
@@ -137,7 +121,6 @@ export class DashboardComponent implements OnInit {
       console.log('No more stops to update, queuing update in 10 seconds.');
       setTimeout(() => {
         this.fetchAllStopDepartures();
-        this.fetchUpdateStatus();
       }, 10 * 1000);
       return;
     }
@@ -147,7 +130,6 @@ export class DashboardComponent implements OnInit {
         this.fetchStopDepartures(stop).then(() => {
           stops.splice(0, 1);
           this.updateStopDepartures(stops);
-          this.api.checkForUpdates();
           this.fatal = false;
         }).catch(err => {
           if (retry >= this.retryAttempts) {
@@ -162,7 +144,7 @@ export class DashboardComponent implements OnInit {
         });
       } else {
         console.log(offlineCounter);
-        console.log('I should probably implement failover cache for thsi new stop stuff');
+        console.log('I should probably implement failover cache for this new stop stuff');
       }
     });
     if (this.loading) setTimeout(() => { this.loading = false; }, 1500);

@@ -1,23 +1,31 @@
+<!-- Initial splash screen -->
 <iw-splash [class.d-none]="!loading || fatal"></iw-splash>
-<iw-update-splash [class.d-none]="!updating"></iw-update-splash>
+<!-- Error screen -->
 <iw-fatal *ngIf="fatal"></iw-fatal>
-<div [class.d-none]="loading || fatal || updating">
+<!-- The main div that contains all of the sites main content -->
+<!-- <div [class.d-none]="loading || fatal || updating"> -->
+<div [class.d-none]="loading || fatal">
+  <!-- The titleBar -->
   <div class="d-flex flex-column py-3 align-items-stretch dashboard">
     <div class="container-fluid px-4">
       <div class="float-left">
         <iw-logo></iw-logo>
       </div>
       <div class="d-flex justify-content-end align-items-center">
+        <!-- Time -->
         <h1 class="mr-3 mt-1 text-white text-center date-time-text d-inline-block text-left text-uppercase"
           style="font-family: 'Roboto Mono', monospace;">
           {{ clock | date: 'HH:mm:ss' }}
         </h1>
+        <!-- Date -->
         <div class="d-flex flex-column justify-content-center date-block text-uppercase text-center">
+          <!-- Name of day -->
           <div class="flex-item">
             <h2 class="mat-title mb-0" style="font-family: 'Roboto Mono', monospace;">
               {{ clock | date: 'EE' }}
             </h2>
           </div>
+          <!-- Day -->
           <div class="flex-item">
             <h1 class="mat-display-1 mb-0" style="font-family: 'Roboto Mono', monospace;">
               {{ clock | date: 'd' }}
@@ -28,11 +36,12 @@
     </div>
 
     <div *ngFor="let stop of stops">
-
+      <!-- Bus stop with data -->
       <div class="d-inline-block my-2 px-4 w-100" *ngIf="stopDepartures[stop].length > 0">
-        <iw-stop [name]="stop" [departures]="stopDepartures[stop]" [directions]="stopDeparturesDirections[stop]"></iw-stop>
+        <iw-stop [name]="stop" [departures]="stopDepartures[stop]" [directions]="stopDeparturesDirections[stop]">
+        </iw-stop>
       </div>
-
+      <!-- Bus stop section but only shown when online data isn't found -->
       <div class="d-inline-block my-3 px-4 w-100" *ngIf="stopDepartures[stop].length === 0">
         <mat-card class="upper animated fadeIn">
           <div class="d-flex mat-display-1 mb-0 font-weight-normal">
@@ -55,6 +64,7 @@
     </div>
 
   </div>
+  <!-- Offline bottom banner -->
   <div class="fixed-bottom" *ngIf="error">
     <mat-card class="deviation-warn">
       <div class="d-flex flex-column text-center">
@@ -62,6 +72,7 @@
       </div>
     </mat-card>
   </div>
+  <!-- Online bottom banner -->
   <div class="fixed-bottom" *ngIf="backOnline">
     <mat-card class="deviation-success">
       <div class="d-flex flex-column text-center">

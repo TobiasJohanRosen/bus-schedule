@@ -6,8 +6,7 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
-$mat-wasp: (
-  50: #e6e6e6,
+$mat-wasp: (50: #e6e6e6,
   100: #c1c1c1,
   200: #989898,
   300: #6f6f6f,
@@ -21,8 +20,7 @@ $mat-wasp: (
   A200: #ffffff,
   A400: #ffffff,
   A700: #ffffff,
-  contrast: (
-    50: #000000,
+  contrast: (50: #000000,
     100: #000000,
     200: #000000,
     300: #ffffff,
@@ -35,9 +33,7 @@ $mat-wasp: (
     A100: #000000,
     A200: #ffffff,
     A400: #ffffff,
-    A700: #ffffff
-  )
-);
+    A700: #ffffff));
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
@@ -51,18 +47,19 @@ $iw-app-theme: mat-light-theme($iw-app-primary, $iw-app-accent, $iw-app-warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($iw-app-theme);
+
 body {
   background-color: map-get($mat-wasp, 900);
   color: #ffffff;
-  background: linear-gradient(
-    149deg,
-    rgba(25, 26, 39, 1) 0%,
-    rgba(29, 26, 42, 1) 100%
-  ) !important;
+  background: linear-gradient(149deg,
+      rgba(25, 26, 39, 1) 0%,
+      rgba(29, 26, 42, 1) 100%) !important;
 }
+
 *:focus {
   outline: none !important;
 }
+
 .upper {
   background-color: map-get($mat-wasp, 500);
   color: #eeeeee;
@@ -71,6 +68,7 @@ body {
   z-index: 100;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
 }
+
 .deferred {
   background-color: map-get($mat-wasp, 500);
   color: #eeeeee;
@@ -78,33 +76,40 @@ body {
   z-index: 100;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
 }
+
 .lower {
   background-color: #272727;
   color: #eeeeee;
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
 }
+
 .deviation-danger {
   background-color: #e23535;
   color: #eeeeee;
   border-radius: 0px !important;
 }
+
 .deviation-warn {
   background-color: #dfc544;
   color: #000;
   border-radius: 0px !important;
 }
+
 .deviation-success {
   background-color: #30921c;
   color: #eee;
   border-radius: 0px !important;
 }
-.bg-yellow  {
+
+.bg-yellow {
   background-color: #dfc544;
 }
+
 .bg-green {
   background-color: #30921c;
 }
+
 .bg-red {
   background-color: #e23535;
 }
@@ -128,7 +133,7 @@ body {
   opacity: 0;
 }
 
-.dashboard  {
+.dashboard {
   min-height: 100vh;
   // background-image: url('./assets/background.png');
   // background-repeat: no-repeat;
