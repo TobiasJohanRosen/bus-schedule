@@ -1,47 +1,36 @@
 <mat-card class="upper animated fadeIn" *ngIf="nextDeparture">
   <div class="d-flex mat-display-1 mb-0 font-weight-normal">
     <div class="flex-item d-flex align-items-center" style="width:100%;">
-      <div
-        class="d-inline-block text-center py-1 mr-3 align-middle"
-        style="width: 82px; border-radius: 4px;"
-        [style.background-color]="nextDeparture.color"
-        [style.color]="nextDeparture.textColor"
-      >
+      <!-- Bus line number -->
+      <div class="d-inline-block text-center py-1 mr-3 align-middle" style="width: 82px; border-radius: 4px;"
+        [style.background-color]="nextDeparture.color" [style.color]="nextDeparture.textColor">
         {{ nextDeparture.line }}
       </div>
+      <!-- Departuring  -->
       <div class="d-inline-block">
         <div>{{ nextDeparture.name }}</div>
-        <div style="font-size: 1rem; line-height: 20px; color: #bbbbbb;">
+        <div style="font-size: 1rem; line-height: 20px; color: #ff0000;">
           {{ nextDeparture.from }}
         </div>
       </div>
     </div>
-    <div class="flex-item ml-auto">
-      <div class="d-inline-block py-1">
-        <span *ngIf="nextDeparture.departing > 0">
-          <span *ngIf="nextDeparture.departing <= 15">
-            {{ nextDeparture.departing }} min
-          </span>
-          <span *ngIf="nextDeparture.departing > 15">
-            {{ nextDeparture.departingTime }}
-          </span>
+    <!-- Time until departure -->
+    <div class="flex-item ml-auto d-inline-block py-1">
+      <span *ngIf="nextDeparture.departing > 0">
+        <span *ngIf="nextDeparture.departing <= 15">
+          {{ nextDeparture.departing }} min
         </span>
-        <span class="text-uppercase" *ngIf="nextDeparture.departing <= 0"
-          >nu</span
-        >
-      </div>
+        <span *ngIf="nextDeparture.departing > 15">
+          {{ nextDeparture.departingTime }}
+        </span>
+      </span>
+      <span class="text-uppercase" *ngIf="nextDeparture.departing <= 0">nu</span>
     </div>
   </div>
 </mat-card>
 <div *ngIf="deviation">
-  <mat-card
-    class="deviation-danger"
-    *ngIf="deviation.severity > 5"
-    matRipple
-    #ripple
-    [matRippleRadius]="720"
-    [matRippleColor]="'rgba(32, 32, 32, 0.1)'"
-  >
+  <mat-card class="deviation-danger" *ngIf="deviation.severity > 5" matRipple #ripple [matRippleRadius]="720"
+    [matRippleColor]="'rgba(32, 32, 32, 0.1)'">
     <div class="d-flex flex-column">
       <h5 class="mat-title mb-0">{{ deviation.title }}</h5>
       <p class="mb-0">{{ deviation.text }}</p>
