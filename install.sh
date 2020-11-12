@@ -1,0 +1,1 @@
+npm install angular @angular/compiler-cli@^11.0.0 @angular/compiler@11.0.0 e2e; npm install; npm audit fix; sudo apt install php7.4
