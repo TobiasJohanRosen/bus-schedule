@@ -10,7 +10,7 @@ import { FatalComponent } from './fatal/fatal.component';
 import { StopComponent } from './stop/stop.component';
 import { LogoComponent } from './logo/logo.component';
 
-import { testData } from './dashboard.component.test.data.js';
+import { testData } from '../../../e2e/src/testdata';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
