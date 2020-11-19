@@ -9,3 +9,8 @@
 
 # Problem with times
 Navigate to the "bus-schedule-cache-system" folder and input `sudo rm -r cache/ && mkdir cache`
+
+# Potential problem with UL data
+The bus data we get from UL is one hour from departure. When displaying busses that departure later than one hour there is a problem, we don't have the data at the time.
+
+An example is a bus that departure in one hour and 20 min, we get the data one hour before departure, then there are 20 minutes (1 hour 20 minutes — 1 hour) where nothing will be displayed.
